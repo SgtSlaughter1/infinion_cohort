@@ -1,218 +1,89 @@
 <template>
-    <div class="container-fluid">
-        <div class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000" data-bs-pause="false">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="/images/campaign.avif" class="d-block w-100" />
-                    <div class="carousel-caption-overlay">
-
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="/images/campaign10.avif" class="d-block w-100" />
-                </div>
-                <div class="carousel-item">
-                    <img src="/images/campaign2.avif" class="d-block w-100" />
-                </div>
-            </div>
+    <div class="carousel-container">
+        <div class="carousel">
+            <div v-for="(image, index) in images" :key="index" :style="{ backgroundImage: `url(${image})` }"
+                :class="{ 'carousel-item': true, active: index === currentIndex }"></div>
         </div>
 
-
-        <!-- body text for the landing page -->
-        <div class="container-fluid">
-            <div>
-                <p>"Unleash Your Potential by joining Our Mission to Create Lasting Change!" "Be part of something
-                    bigger than yourself. With every contribution, you are helping to build a brighter future.
-                    Together, we are unstoppable." Join the Movement and Make a Difference Today.
-                </p>
-                <h1>About Us</h1>
-                <p>
-                    We are on a mission to protect the environment, empower underserved communities, promote health and
-                    wellness,
-                    etc. Our team brings together passionate advocates, expert
-                    practitioners, and dedicated volunteers who believe in the power of collective action to solve
-                    today's most
-                    pressing issues.
-                    Through our program we are making a measurable impact. Every action counts, and with your help, we
-                    can scale our
-                    efforts and reach more people. Join us as we pave the way for a sustainable, equitable, and thriving
-                    future for
-                    all.
-                </p>
-                <p>
-                    Why Your Contribution Matters
-                    "Every dollar you give goes directly towards outreach, innovation, education, etc. Here is how your
-                    support helps us make a difference:
-                    Impact: We use your contributions to fund projects with a proven track record of success. From
-                    planting trees or building schools to other impactful actions relevant to the campaign, we are
-                    maximizing every resource.
-                    Transparency: We believe in accountability. Our donors receive regular updates on project milestones
-                    and real-time data on the impact of their donations.
-                    Community: When you donate, you are not just a contributor; you are a valued member of our
-                    community. Connect with like-minded individuals, participate in events, and celebrate the progress
-                    we are achieving together."
-                </p>
-                <h1>Our Vision</h1>
-                <p>
-                    We envision a future where every child has access to education, renewable energy. Together, we can
-                    make it happen.
-                </p>
-                <h1>Goals</h1>
-                <p>
-                    Make a Donation: Every dollar brings us closer to our mission.
-                    Volunteer with Us: Join our team and help bring our initiatives to life.
-                    Spread the Word: Share our message with your network to amplify our impact.
-                    Together, we are not just supporting a cause we are building a movement that will shape the future.
-                    Join us and
-                    make a difference."
-                </p>
-                <h1>Testimonials</h1>
-                <p>
-                    It is inspiring to see the real impact of my contributions through us. I feel part of something
-                    truly transformative. Volunteering with us has been a life-changing experience. I have seen
-                    firsthand the positive changes
-                    we are making in people's lives.
-                </p>
+        <div class="carousel-caption-overlay">
+            <div class="content animate__animated animate__slideInLeft">
+                <h3>Welcome to Cohort-3 campaign website</h3>
+                <p>Experience the best moments with us!</p>
             </div>
+            <router-link to="/login" class="btn custom-btn btn-lg">Get Stated</router-link>
         </div>
-        
-
-        <!-- Footer -->
-        <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
-            <!-- Section: Social media -->
-            <section class="d-flex justify-content-between p-4" style="background-color: #6351ce">
-                <!-- Left -->
-                <div class="me-5">
-                    <span>Get connected with us on social networks:</span>
-                </div>
-                <!-- Left -->
-
-                <!-- Right -->
-                <div>
-                    <a href="" class="text-white me-4">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="" class="text-white me-4">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="" class="text-white me-4">
-                        <i class="fab fa-google"></i>
-                    </a>
-                    <a href="" class="text-white me-4">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="" class="text-white me-4">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="" class="text-white me-4">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-                <!-- Right -->
-            </section>
-            <!-- Section: Social media -->
-
-            <!-- Section: Links  -->
-            <section class="">
-                <div class="container text-center text-md-start mt-5">
-                    <!-- Grid row -->
-                    <div class="row mt-3">
-                        <!-- Grid column -->
-                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                            <!-- Content -->
-                            <h6 class="text-uppercase fw-bold">Company name</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p>
-                                Here you can use rows and columns to organize your footer
-                                content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit.
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <!-- Grid column -->
-                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <!-- Links -->
-                            <h6 class="text-uppercase fw-bold">Products</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p>
-                                <a href="#!" class="text-white">MDBootstrap</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">MDWordPress</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">BrandFlow</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Bootstrap Angular</a>
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <!-- Grid column -->
-                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <!-- Links -->
-                            <h6 class="text-uppercase fw-bold">Useful links</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p>
-                                <a href="#!" class="text-white">Your Account</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Become an Affiliate</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Shipping Rates</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Help</a>
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <!-- Grid column -->
-                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                            <!-- Links -->
-                            <h6 class="text-uppercase fw-bold">Contact</h6>
-                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; background-color: #7c4dff; height: 2px" />
-                            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-                            <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>
-                            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
-                            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
-                        </div>
-                        <!-- Grid column -->
-                    </div>
-                    <!-- Grid row -->
-                </div>
-            </section>
-            <!-- Section: Links  -->
-
-            <!-- Copyright -->
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-                © 2020 Copyright:
-                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-            </div>
-            <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-
-
     </div>
+
+    
+
+
 </template>
 
 <script>
-import LoginPage from "./LoginPage.vue";
-
 export default {
-    components: { LoginPage },
+
+
+    data() {
+        return {
+
+            images: [
+                '/images/campaign12.png',
+                '/images/campaign11.png',
+                '/images/campaign10.avif',
+                '/images/campaign2.avif',
+                '/images/campaign3.avif',
+                '/images/campaign5.jpg',
+                '/images/campaign7.avif',
+                '/images/campaign9.avif'
+            ],
+            currentIndex: 0,
+            intervalTime: 2000,
+        };
+    },
+    mounted() {
+        this.startCarousel();
+    },
+    methods: {
+        
+        startCarousel() {
+            setInterval(() => {
+
+                this.currentIndex = (this.currentIndex + 1) % this.images.length;
+            }, this.intervalTime);
+        },
+    },
 };
 </script>
 
-<style scoped>
+<style>
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 729px;
+    overflow: hidden;
+}
+
+.carousel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-item {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.carousel-item.active {
+    opacity: 1;
+}
 
 .carousel-caption-overlay {
     position: absolute;
@@ -220,14 +91,27 @@ export default {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(36, 123, 123, 0.5);
     color: white;
     text-align: center;
+    /* border: 1px solid aqua; */
+
 }
 
-.carousel-item>img {
-    width: 100%;
-
-    height: 730px;
+.carousel-caption-overlay>div {
+    margin-top: 250px;
 }
+
+.btn.custom-btn {
+    border: 3px solid;
+    border-color: #247B7B;
+    color: white;
+}
+
+.btn.custom-btn:hover {
+    background: #247B7B;
+    color: white;
+}
+
+
 </style>

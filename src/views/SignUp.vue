@@ -1,15 +1,212 @@
 <template>
-    <div>
+    <div class="d-flex align-items-center justify-content-center vh-100 my-5">
+        <div class="form-container animated-form p-4 rounded shadow">
+            <h2 class="text-center mb-4">Signup</h2>
+            <form @submit.prevent="handleSignup">
+                <!-- Name Field -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input v-model="formData.name" type="text" id="name" class="form-control" @blur="validateName"
+                        placeholder="Enter your name" />
+                    <div class="text-danger" v-if="errors.name">{{ errors.name }}</div>
+                </div>
 
+                <!-- Email Field -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input v-model="formData.email" type="email" id="email" class="form-control" @blur="validateEmail"
+                        placeholder="email@gmail.com" />
+                    <div class="text-danger" v-if="errors.email">{{ errors.email }}</div>
+                </div>
+
+                <!-- Phone Field -->
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input v-model="formData.phone" type="tel" id="phone" class="form-control" @blur="validatePhone"
+                        placeholder="Enter phone number" />
+                    <div class="text-danger" v-if="errors.phone">{{ errors.phone }}</div>
+                </div>
+
+                <!-- Date of Birth Field -->
+                <div class="mb-3">
+                    <label for="dob" class="form-label">Date of Birth</label>
+                    <input v-model="formData.dob" type="date" id="dob" class="form-control" @blur="validateDob" />
+                    <div class="text-danger" v-if="errors.dob">{{ errors.dob }}</div>
+                </div>
+
+                <!-- Gender Field -->
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select v-model="formData.gender" id="gender" class="form-select" @blur="validateGender">
+                        <option value="" disabled>Select your gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="text-danger" v-if="errors.gender">
+                        {{ errors.gender }}
+                    </div>
+                </div>
+
+                <div class="text-danger" v-if="formError">{{ formError }}</div>
+                <button type="submit" class="btn btn-primary w-100">
+                    Create Account
+                </button>
+                <div class="text-center mt-3">
+                    <span>Already have an Account? </span>
+                    <router-link to="/login" class="btn-link">Login</router-link>
+                </div>
+            </form>
+            <div class="mt-3 text-success text-center" v-if="successMessage">
+                {{ successMessage }}
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    export default {
-        
-    }
+export default {
+    data() {
+        return {
+            formData: {
+                name: "",
+                email: "",
+                phone: "",
+                dob: "",
+                gender: "",
+            },
+            errors: {
+                name: "",
+                email: "",
+                phone: "",
+                dob: "",
+                gender: "",
+            },
+            formError: "",
+            successMessage: "",
+        };
+    },
+    methods: {
+        validateName() {
+            const nameRegex = /^[A-Za-z\s]+$/;
+            if (!nameRegex.test(this.formData.name)) {
+                this.errors.name = "Name must contain only letters.";
+            } else if (this.formData.name.length < 6) {
+                this.errors.name = "Name must be at least 6 characters long.";
+            } else {
+                this.errors.name = "";
+            }
+        },
+
+        validateEmail() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            this.errors.email = !emailRegex.test(this.formData.email)
+                ? "Enter a valid email address."
+                : "";
+        },
+
+        validatePhone() {
+            const phoneRegex = /^[0-9]{10}$/;
+            this.errors.phone = !phoneRegex.test(this.formData.phone)
+                ? "Phone number must be 10 digits."
+                : "";
+        },
+
+        validateDob() {
+            const today = new Date();
+            const dob = new Date(this.formData.dob);
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+
+            if (
+                monthDiff < 0 ||
+                (monthDiff === 0 && today.getDate() < dob.getDate())
+            ) {
+                age--;
+            }
+
+            if (!this.formData.dob) {
+                this.errors.dob = "Date of Birth is required.";
+            } else if (age < 18) {
+                this.errors.dob = "You must be at least 18 years old.";
+            } else {
+                this.errors.dob = "";
+            }
+        },
+
+        validateGender() {
+            this.errors.gender = !this.formData.gender ? "Gender is required." : "";
+        },
+
+        handleSignup() {
+            this.formError = "";
+            this.errors = { name: "", email: "", phone: "", dob: "", gender: "" };
+
+            this.validateName();
+            this.validateEmail();
+            this.validatePhone();
+            this.validateDob();
+            this.validateGender();
+
+            if (Object.values(this.errors).some((error) => error)) {
+                this.formError = "Please correct the highlighted fields.";
+                return;
+            }
+
+            localStorage.setItem("userDetails", JSON.stringify(this.formData));
+            this.successMessage = "Account created successfully!";
+            this.resetForm();
+
+            setTimeout(() => {
+                this.successMessage = "";
+            }, 3000);
+        },
+
+        resetForm() {
+            this.formData = { name: "", email: "", phone: "", dob: "", gender: "" };
+            this.errors = { name: "", email: "", phone: "", dob: "", gender: "" };
+            this.formError = "";
+            this.successMessage = "";
+        },
+    },
+};
 </script>
 
 <style scoped>
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 0 auto;
+}
 
+.btn-link {
+    color: #007bff;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated-form {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+
+/* Media Query */
+@media (max-width: 576px) {
+    .form-container {
+        padding: 15px;
+    }
+}
 </style>
