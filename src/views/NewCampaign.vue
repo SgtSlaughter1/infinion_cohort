@@ -1,162 +1,205 @@
 <template>
-  <div class="add-campaign-form">
-    <h2>Create New Campaign</h2>
-    <div v-if="errors.general" class="error-message">{{ errors.general }}</div>
-    <form @submit.prevent="createCampaign">
-      <div class="form-group">
-        <label for="campaignName">Campaign Name:</label>
-        <input
-          type="text"
-          id="campaignName"
-          v-model="campaignName"
-          placeholder="e.g The Future is now"
-          :class="{ 'error-input': errors.campaignName }"
-        />
-        <span v-if="errors.campaignName" class="field-error">{{
-          errors.campaignName
-        }}</span>
-      </div>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <div class="card form-card">
+          <div class="card-body">
+            <h2 class="card-title mb-4">Create New Campaign</h2>
 
-      <div class="form-group">
-        <label for="campaignDescription">Campaign Description:</label>
-        <textarea
-          id="campaignDescription"
-          v-model="campaignDescription"
-          placeholder="Please add a description to your campaign"
-          :class="{ 'error-input': errors.campaignDescription }"
-        ></textarea>
-        <span v-if="errors.campaignDescription" class="field-error">{{
-          errors.campaignDescription
-        }}</span>
-      </div>
+            <div v-if="errors.general" class="alert alert-danger">
+              {{ errors.general }}
+            </div>
 
-      <div class="form-group date-group">
-        <div class="date-input">
-          <label for="startDate">Start Date:</label>
-          <input
-            type="date"
-            id="startDate"
-            v-model="startDate"
-            :min="minDate"
-            :class="{ 'error-input': errors.startDate }"
-          />
-          <span v-if="errors.startDate" class="field-error">{{
-            errors.startDate
-          }}</span>
+            <form @submit.prevent="createCampaign">
+              <div class="mb-3">
+                <label for="campaignName" class="form-label"
+                  >Campaign Name:</label
+                >
+                <input
+                  type="text"
+                  id="campaignName"
+                  v-model="campaignName"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors.campaignName }"
+                  placeholder="e.g The Future is now"
+                />
+                <div v-if="errors.campaignName" class="invalid-feedback">
+                  {{ errors.campaignName }}
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="campaignDescription" class="form-label"
+                  >Campaign Description:</label
+                >
+                <textarea
+                  id="campaignDescription"
+                  v-model="campaignDescription"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors.campaignDescription }"
+                  placeholder="Please add a description to your campaign"
+                  rows="4"
+                ></textarea>
+                <div v-if="errors.campaignDescription" class="invalid-feedback">
+                  {{ errors.campaignDescription }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="startDate" class="form-label">Start Date:</label>
+                  <input
+                    type="date"
+                    id="startDate"
+                    v-model="startDate"
+                    :min="minDate"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.startDate }"
+                  />
+                  <div v-if="errors.startDate" class="invalid-feedback">
+                    {{ errors.startDate }}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="endDate" class="form-label">End Date:</label>
+                  <input
+                    type="date"
+                    id="endDate"
+                    v-model="endDate"
+                    :min="minEndDate"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.endDate }"
+                  />
+                  <div v-if="errors.endDate" class="invalid-feedback">
+                    {{ errors.endDate }}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mb-3 d-flex justify-content-between align-items-center"
+              >
+                <label class="form-label mb-0"
+                  >Want to receive daily digest?</label
+                >
+                <div class="form-check form-switch">
+                  <input
+                    type="checkbox"
+                    id="dailyDigest"
+                    v-model="dailyDigest"
+                    class="form-check-input custom-switch"
+                    role="switch"
+                  />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="linkedKeywords" class="form-label"
+                  >Linked Keywords:</label
+                >
+                <input
+                  type="text"
+                  id="linkedKeywords"
+                  v-model="currentKeyword"
+                  @keydown.enter.prevent="addKeyword"
+                  class="form-control"
+                  placeholder="To add keywords, type your keyword and press enter"
+                />
+                <div class="mt-2">
+                  <span
+                    v-for="(keyword, index) in linkedKeywords"
+                    :key="index"
+                    class="badge keyword-badge me-2 mb-2"
+                  >
+                    {{ keyword }}
+                    <button
+                      type="button"
+                      @click="removeKeyword(index)"
+                      class="btn-close btn-close-white ms-2 remove-keyword"
+                      aria-label="Remove"
+                    ></button>
+                  </span>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="digestFrequency" class="form-label">
+                  Select digest frequency:
+                </label>
+                <select
+                  id="digestFrequency"
+                  v-model="digestFrequency"
+                  class="form-select"
+                  :class="{ 'is-invalid': errors.digestFrequency }"
+                  :disabled="!dailyDigest"
+                >
+                  <option value="" disabled selected>Select</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+                <div v-if="errors.digestFrequency" class="invalid-feedback">
+                  {{ errors.digestFrequency }}
+                </div>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button
+                  type="button"
+                  @click="cancel"
+                  class="btn btn-cancel"
+                  :disabled="isLoading"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-create"
+                  :disabled="isLoading"
+                >
+                  {{ isLoading ? "Creating..." : "Create Campaign" }}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="date-input">
-          <label for="endDate">End Date:</label>
-          <input
-            type="date"
-            id="endDate"
-            v-model="endDate"
-            :min="minEndDate"
-            :class="{ 'error-input': errors.endDate }"
-          />
-          <span v-if="errors.endDate" class="field-error">{{
-            errors.endDate
-          }}</span>
-        </div>
       </div>
+    </div>
 
-      <div class="form-group digest-group">
-        <label for="dailyDigest"
-          >Want to receive daily digest about the campaign?</label
-        >
-        <div class="switch-container">
-          <label class="switch">
-            <input type="checkbox" id="dailyDigest" v-model="dailyDigest" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="linkedKeywords">Linked Keywords:</label>
-        <input
-          type="text"
-          id="linkedKeywords"
-          v-model="currentKeyword"
-          @keydown.enter.prevent="addKeyword"
-          class="linked-keywords-input"
-          placeholder="To add keywords, type your keyword and press enter"
-        />
-        <div class="keyword-list">
-          <span
-            v-for="(keyword, index) in linkedKeywords"
-            :key="index"
-            class="keyword"
-          >
-            {{ keyword }}
+    <!-- Success Modal -->
+    <div v-if="showSuccessModal" class="modal fade show d-block" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-primary">
+              Campaign Created Successfully!
+            </h5>
             <button
               type="button"
-              @click="removeKeyword(index)"
-              class="remove-keyword"
-            >
-              &times;
+              class="btn-close"
+              @click="closeModal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Your campaign "{{ campaignName }}" has been created.</p>
+          </div>
+          <div class="modal-footer">
+            <button @click="goToEditCampaign" class="btn btn-create">
+              View Campaign
             </button>
-          </span>
+            <button @click="closeModal" class="btn btn-cancel">Close</button>
+          </div>
         </div>
       </div>
-
-      <div class="form-group">
-        <label for="digestFrequency"
-          >Kindly select how often you want to receive daily digest:</label
-        >
-        <select
-          id="digestFrequency"
-          v-model="digestFrequency"
-          class="digest-frequency-select"
-          :class="{ 'error-input': errors.digestFrequency }"
-          :disabled="!dailyDigest"
-        >
-          <option value="" disabled selected>Select</option>
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
-        <span v-if="errors.digestFrequency" class="field-error">{{
-          errors.digestFrequency
-        }}</span>
-      </div>
-
-      <div class="form-actions">
-        <button
-          type="button"
-          @click="cancel"
-          class="btn-cancel"
-          :disabled="isLoading"
-        >
-          Cancel
-        </button>
-        <button type="submit" class="btn-create" :disabled="isLoading">
-          {{ isLoading ? "creating..." : "Create Campaign" }}
-        </button>
-      </div>
-    </form>
-
-    <div v-if="showSuccessModal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Campaign Created Successfully!</h3>
-          <button @click="closeModal" class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p>Your campaign "{{ campaignName }}" has been created.</p>
-        </div>
-        <div class="modal-footer">
-          <button @click="goToEditCampaign" class="btn-edit-campaign">
-            View Campaign
-          </button>
-          <button @click="closeModal" class="btn-close-modal">Close</button>
-        </div>
-      </div>
+      <div class="modal-backdrop fade show"></div>
     </div>
   </div>
   <router-view></router-view>
 </template>
 
 <script>
+// Script remains exactly the same as the previous version
 import apiService from "@/services/api";
 
 export default {
@@ -179,9 +222,9 @@ export default {
         endDate: "",
         digestFrequency: "",
         general: "",
-        showSuccessModal: false,
-        createdCampaignId: null,
       },
+      showSuccessModal: false,
+      createdCampaignId: null,
     };
   },
 
@@ -238,9 +281,7 @@ export default {
     },
 
     async createCampaign() {
-      if (!this.validateForm()) {
-        return;
-      }
+      if (!this.validateForm()) return;
 
       this.isLoading = true;
       this.clearErrors();
@@ -258,7 +299,6 @@ export default {
 
         const createdCampaign = await apiService.createCampaign(campaignData);
         this.$emit("campaign-created", createdCampaign);
-
         this.createdCampaignId = createdCampaign.id;
         this.showSuccessModal = true;
       } catch (error) {
@@ -272,7 +312,7 @@ export default {
     goToEditCampaign() {
       if (this.createdCampaignId) {
         this.$router.push({
-          name: "EditCampaign", 
+          name: "EditCampaign",
           params: { id: this.createdCampaignId },
         });
       }
@@ -289,13 +329,16 @@ export default {
         this.currentKeyword = "";
       }
     },
+
     removeKeyword(index) {
       this.linkedKeywords.splice(index, 1);
     },
+
     cancel() {
       this.$emit("cancel");
       this.resetForm();
     },
+
     resetForm() {
       this.campaignName = "";
       this.campaignDescription = "";
@@ -312,165 +355,24 @@ export default {
 </script>
 
 <style scoped>
-.add-campaign-form {
-  max-width: 800px;
-  margin: 100px auto 0;
-  padding: 30px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.form-card {
   background-color: #f9f9f9;
+  border: 1px solid #ccc;
 }
 
-.form-group {
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.field-error {
-  color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  display: block;
-}
-
-.error-input {
-  border-color: #dc3545;
-}
-
-.error-input:focus {
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
+.form-label {
   font-weight: bold;
 }
 
-input[type="text"],
-input[type="date"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.date-group {
-  display: flex;
-  justify-content: space-between;
-}
-
-.date-input {
-  width: 48%;
-}
-
-.digest-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #6e0080;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-.linked-keywords-input {
-  height: 50px;
-}
-
-.keyword-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.keyword {
-  display: inline-flex;
-  align-items: center;
-  background-color: #e0e0e0;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 14px;
-}
-
-.remove-keyword {
-  background: none;
+.btn-create {
+  background-color: #247b7b;
+  color: white;
   border: none;
-  color: #888;
-  cursor: pointer;
-  font-size: 16px;
-  margin-left: 5px;
 }
 
-.digest-frequency-select {
-  width: auto;
-  min-width: 150px;
-}
-
-.form-actions {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 20px;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-right: 10px;
+.btn-create:hover {
+  background-color: #1c6161;
+  color: white;
 }
 
 .btn-cancel {
@@ -479,92 +381,45 @@ button {
   border: 1px solid #5b9c9b;
 }
 
-.btn-create {
-  background-color: #247b7b;
-  color: white;
-}
-.error-message {
-  color: #f44336;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  background-color: #ffebee;
-  border-radius: 4px;
+.btn-cancel:hover {
+  background-color: #e9e9e9;
+  color: #4a8180;
 }
 
-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.keyword-badge {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
 }
 
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.custom-switch:checked {
+  background-color: #6e0080;
+  border-color: #6e0080;
+}
+
+.modal {
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
 }
 
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-}
-
-.modal-header h3 {
-  margin: 0;
+.modal-title {
   color: #247b7b;
 }
 
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #888;
+.form-control:focus,
+.form-select:focus {
+  border-color: #247b7b;
+  box-shadow: 0 0 0 0.25rem rgba(36, 123, 123, 0.25);
 }
 
-.modal-body {
-  margin-bottom: 20px;
+.is-invalid {
+  border-color: #dc3545;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
+.is-invalid:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
-
-.btn-edit-campaign {
-  background-color: #247b7b;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-close-modal {
-  background-color: #f9f9f9;
-  color: #5b9c9b;
-  border: 1px solid #5b9c9b;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
+.modal-backdrop {
+  display: none;
 }
 </style>

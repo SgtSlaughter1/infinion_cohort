@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import HomeView from '../views/HomeView.vue'
-import EditCampaign from '@/views/EditCampaign.vue'
+// import EditCampaign from '@/views/EditCampaign.vue'
 import NewCampaign from '@/views/NewCampaign.vue'
 
 
@@ -13,11 +13,11 @@ const router = createRouter({
       name: "newCampaign",
       component: NewCampaign,
     },
-    {
-      path: "/campaign/:id/edit",
-      name: "editCampaign",
-      component: () => import("@/views/EditCampaign.vue"),
-    },
+    // {
+    //   path: "/campaign/:id/edit",
+    //   name: "editCampaign",
+    //   component: () => import("@/views/EditCampaign.vue"),
+    // },
   ],
 });
 
