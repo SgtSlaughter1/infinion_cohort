@@ -249,7 +249,6 @@ export default {
 .title {
   color: #247b7b;
   margin: 0;
-  margin-left: 80px;
 }
 
 .newbtn {

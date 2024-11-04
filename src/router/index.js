@@ -20,9 +20,9 @@ const router = createRouter({
       component: NewCampaign,
     },
     // {
-    //   path: "/campaign/:id/edit",
-    //   name: "editCampaign",
-    //   component: () => import("@/views/EditCampaign.vue"),
+    //   path: "/EditCampaign",
+    //   name: "EditCampaign",
+    //   component: EditCampaign,
     // },
   ],
   
