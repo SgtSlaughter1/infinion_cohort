@@ -2,7 +2,7 @@
     <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="form-container animated-form p-4 rounded shadow">
             <form @submit.prevent="handleSubmit">
-                <h2 class="text-center mb-4">Login Form</h2>
+                <h5 class="text-center mb-4">LOGIN</h5>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" v-model="email" @input="validateEmail"
@@ -13,70 +13,113 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" v-model="password"
                         @input="validatePassword" placeholder="Enter your password" />
-                    <div class="text-danger" v-if="passwordError">{{ passwordError }}</div>
+                    <div class="text-danger" v-if="passwordError">
+                        {{ passwordError }}
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Submit</button>
+                <button type="submit" class="btn btn-custom w-100 fw-bold">Login</button>
                 <div class="text-center mt-3">
-                    <span>Don't have an Account? </span>
+                    <span class="fw-light">Don't have an Account? </span>
                     <router-link to="/signup" class="btn-link">Create an Account</router-link>
                 </div>
             </form>
-            <div class="mt-3 text-success text-center" v-if="successMessage">{{ successMessage }}</div>
+            <div class="mt-3 text-success text-center" v-if="successMessage">
+                {{ successMessage }}
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+import "../mock"; // Ensure the mock is imported
+
 export default {
     data() {
         return {
-            email: '',
-            password: '',
-            emailError: '',
-            passwordError: '',
-            successMessage: ''
+            email: "",
+            password: "",
+            emailError: "",
+            passwordError: "",
+            successMessage: "",
         };
     },
     methods: {
         validateEmail() {
             const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-            this.emailError = '';
+            this.emailError = "";
 
-            if (this.email.trim() === '') {
-                this.emailError = 'Email address is required.';
+            if (this.email.trim() === "") {
+                this.emailError = "Email address is required.";
             } else if (!gmailRegex.test(this.email)) {
-                this.emailError = 'Email address must be valid.';
+                this.emailError = "Email address must be valid.";
             }
         },
         validatePassword() {
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            this.passwordError = '';
+            const passwordRegex =
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            this.passwordError = "";
 
-            if (this.password.trim() === '') {
-                this.passwordError = 'password is required.';
+            if (this.password.trim() === "") {
+                this.passwordError = "password is required.";
             } else if (!passwordRegex.test(this.password)) {
-                this.passwordError = 'Password must be at least 8 characters long, contain at least one letter, one number, and one special character.';   
+                this.passwordError =
+                    "Password must be at least 8 characters long, contain at least one letter, one number, and one special character.";
             }
         },
-        handleSubmit() {
-            this.emailError = '';
-            this.passwordError = '';
-            this.successMessage = '';
+
+        async handleSubmit() {
+            this.emailError = "";
+            this.passwordError = "";
+            this.successMessage = "";
+            this.loading = false; // Initial loading state
 
             this.validateEmail();
             this.validatePassword();
 
             if (!this.emailError && !this.passwordError) {
-                this.successMessage = 'Form submitted successfully!';
-                this.email = '';
-                this.password = '';
-                this.emailError = '';
-                this.passwordError = '';
+                this.loading = true; // Set loading to true before making the request
+                try {
+                    const response = await axios.post("/api/login", {
+                        email: this.email,
+                        password: this.password,
+                    });
 
-                setTimeout(() => this.successMessage = '', 3000);
+                    // Handle successful login
+                    if (response.data.message) {
+                        this.successMessage = response.data.message;
+
+                        const savedUser = localStorage.getItem("userDetails");
+                        if (savedUser) {
+                            const user = JSON.parse(savedUser);
+                            this.successMessage = `Welcome back, ${user.name}!`;
+                        }
+
+                        // Reset the form fields
+                        this.email = "";
+                        this.password = "";
+
+                        // Wait for 2 seconds before navigating
+                        setTimeout(() => {
+                            this.loading = false;
+                            this.successMessage = "";
+                            this.$router.push("/");
+                        }, 2000);
+                    } else {
+                        this.emailError = response.data.message;
+                    }
+                } catch (err) {
+                    this.error = err.response
+                        ? err.response.data.message
+                        : "Error occurred!";
+                } finally {
+                    // Reset error messages regardless of the outcome
+                    this.emailError = "";
+                    this.passwordError = "";
+                }
             }
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -87,14 +130,26 @@ export default {
     background-color: #f8f9fa;
 }
 
+.btn.btn-custom {
+    border: 3px solid;
+    border-color: #247B7B;
+    border-radius: 20px;
+}
+
+.btn.btn-custom:hover {
+    background-color: #247B7B;
+    color: white;
+}
+
 .btn-link {
-    color: #007bff;
+    color: #247B7B;
     text-decoration: none;
     font-weight: bold;
 }
 
 .btn-link:hover {
     text-decoration: underline;
+    color: #247B7B;
 }
 
 @keyframes fadeInUp {
@@ -113,8 +168,6 @@ export default {
     animation: fadeInUp 0.8s ease-out;
 }
 
-
-
 /* Media Query */
 @media (max-width: 576px) {
     .form-container {
@@ -128,7 +181,4 @@ export default {
         padding: 2rem;
     }
 }
-
-
-
 </style>

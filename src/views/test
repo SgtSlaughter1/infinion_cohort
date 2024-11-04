@@ -66,20 +66,9 @@
                     <router-link to="/login" class="btn-link">Login</router-link>
                 </div>
             </form>
-            <div v-if="successMessage" class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Congratulation!</h3>
-                            <button type="button" class="btn-close" @click="closeModal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p class="text-center">{{ successMessage }}</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="mt-3 text-success text-center" v-if="successMessage">
+                {{ successMessage }}
             </div>
-
         </div>
     </div>
 </template>
@@ -183,19 +172,16 @@ export default {
                 this.formError = "Please correct the highlighted fields.";
                 return;
             }
+            
 
             localStorage.setItem("userDetails", JSON.stringify(this.formData));
-            this.successMessage = "You have successfully created an account!";
+            this.successMessage = "Account created successfully!";
             this.resetForm();
 
             setTimeout(() => {
-                this.closeModal();
+                this.successMessage = "";
                 this.$router.push("/login");
             }, 8000);
-        },
-
-        closeModal() {
-            this.successMessage = null;
         },
 
         resetForm() {
@@ -255,24 +241,6 @@ export default {
 .animated-form {
     animation: fadeInUp 0.8s ease-out;
 }
-
-.modal-backdrop {
-    display: none;
-}
-
-.modal.show {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-}
-
-
-
 
 /* Media Query */
 @media (max-width: 576px) {

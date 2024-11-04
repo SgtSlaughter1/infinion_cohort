@@ -6,11 +6,12 @@
         </div>
 
         <div class="carousel-caption-overlay">
-            <div class="content animate__animated animate__slideInLeft">
-                <h3>Welcome to Cohort-3 campaign website</h3>
-                <p>Experience the best moments with us!</p>
+            <div class="content animate__animated animate__slideInDown">
+                <h1>Welcome to Scrutz</h1>
+                <h6>Do you have a campaign and you do not know how to go about it ? <br>Trust us with your campaign and we will give you the very best experience.</h6>
+                <!-- <img src="/images/arrowdown.svg"/> -->
             </div>
-            <router-link to="/login" class="btn custom-btn btn-lg">Get Stated</router-link>
+            <router-link to="/login" class="btn custom-btn btn-lg  animate__animated animate__slideInUp mt-4">Get Started</router-link>
         </div>
     </div>
 
@@ -59,7 +60,7 @@ export default {
 .carousel-container {
     position: relative;
     width: 100%;
-    height: 729px;
+    height: 100vh;
     overflow: hidden;
 }
 
@@ -91,7 +92,7 @@ export default {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(36, 123, 123, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     color: white;
     text-align: center;
     /* border: 1px solid aqua; */
@@ -99,16 +100,16 @@ export default {
 }
 
 .carousel-caption-overlay>div {
-    margin-top: 250px;
+    margin-top: 290px;
 }
 
-.btn.custom-btn {
+.btn.custom-btn:hover {
     border: 3px solid;
     border-color: #247B7B;
     color: white;
 }
 
-.btn.custom-btn:hover {
+.btn.custom-btn {
     background: #247B7B;
     color: white;
 }
