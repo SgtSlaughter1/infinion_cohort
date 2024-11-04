@@ -60,6 +60,7 @@
                 <div class="text-danger" v-if="formError">{{ formError }}</div>
                 <button type="submit" class="btn btn-custom w-100 fw-bold">
                     Create Account
+                    
                 </button>
                 <div class="text-center mt-3">
                     <span class="fw-light">Already have an Account? </span>
