@@ -20,9 +20,9 @@ const router = createRouter({
       component: NewCampaign,
     },
     // {
-    //   path: "/EditCampaign",
-    //   name: "EditCampaign",
-    //   component: EditCampaign,
+    //   path: "/ViewCampaign",
+    //   name: "ViewCampaign",
+    //   component: ViewCampaign,
     // },
   ],
   

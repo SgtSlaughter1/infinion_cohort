@@ -185,7 +185,7 @@
             <p>Your campaign "{{ campaignName }}" has been created.</p>
           </div>
           <div class="modal-footer">
-            <button @click="goToEditCampaign" class="btn btn-create">
+            <button @click="goToViewCampaign" class="btn btn-create">
               View Campaign
             </button>
             <button @click="closeModal" class="btn btn-cancel">Close</button>
@@ -308,10 +308,10 @@ export default {
       }
     },
 
-    goToEditCampaign() {
+    goToViewCampaign() {
       if (this.createdCampaignId) {
         this.$router.push({
-          name: "EditCampaign",
+          name: "ViewCampaign",
           params: { id: this.createdCampaignId },
         });
       }
