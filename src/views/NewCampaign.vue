@@ -199,11 +199,10 @@
 </template>
 
 <script>
-// Script remains exactly the same as the previous version
 import apiService from "@/services/api";
 
 export default {
-  name: "AddCampaignForm",
+  name: "NewCampaign",
   data() {
     return {
       campaignName: "",
@@ -321,6 +320,7 @@ export default {
     closeModal() {
       this.showSuccessModal = false;
       this.resetForm();
+      this.$router.push({ name: 'OverviewComp' })
     },
 
     addKeyword() {
@@ -335,8 +335,7 @@ export default {
     },
 
     cancel() {
-      this.$emit("cancel");
-      this.resetForm();
+      this.$router.push({ name: 'OverviewComp' })
     },
 
     resetForm() {
