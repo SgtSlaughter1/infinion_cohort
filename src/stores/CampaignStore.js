@@ -38,6 +38,7 @@ export const useCampaignStore = defineStore("campaign", {
         });
 
         this.createdCampaign = response.data;
+        return response.data;
       } catch (error) {
         console.error("API Error:", {
           status: error.response?.status,
@@ -46,6 +47,7 @@ export const useCampaignStore = defineStore("campaign", {
         });
         this.error =
           error.response?.data?.message || "Failed to create campaign";
+        throw new Error(this.error);
       } finally {
         this.isLoading = false;
       }

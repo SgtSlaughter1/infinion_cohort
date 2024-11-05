@@ -12,7 +12,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="content-wrapper container ">
+    <div class="content-wrapper container">
       <div class="row mb-4">
         <div class="col-12">
           <div class="header-content mt-4">
@@ -76,7 +76,7 @@
             No activity yet. Create a new campaign to get started
           </p>
           <button
-            class="btn  d-flex align-items-center gap-2 mt-2 newbtn"
+            class="btn d-flex align-items-center gap-2 mt-2 newbtn"
             @click="goToNewCampaign"
           >
             <i class="fas fa-plus"></i>
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from "@/stores/CampaignStore";
 
 export default {
   name: "Overview",
@@ -161,8 +161,6 @@ export default {
   },
 };
 </script>
-
-
 
 <style scoped>
 .overview-container {
@@ -262,9 +260,9 @@ export default {
 .export-btn {
   white-space: nowrap;
   background-color: #247b7b;
-  color:white;
+  color: white;
 }
-.export-btn:hover{
+.export-btn:hover {
   background-color: #0e9191;
 }
 
@@ -297,7 +295,6 @@ export default {
   .export-btn {
     width: 100%;
     justify-content: center;
-    
   }
 
   .toast-container {

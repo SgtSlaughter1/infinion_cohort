@@ -171,9 +171,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text">
-              Campaign Created Successfully!
-            </h5>
+            <h5 class="modal-title text">Campaign Created Successfully!</h5>
             <button
               type="button"
               class="btn-close"
@@ -199,7 +197,7 @@
 </template>
 
 <script>
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from "@/stores/CampaignStore";
 
 export default {
   name: "NewCampaign",
@@ -279,27 +277,30 @@ export default {
       return isValid;
     },
 
-        async createCampaign() {
+    async createCampaign() {
       if (!this.validateForm()) return;
-      this.isLoading= "true";
+      this.isLoading = true;
       this.clearErrors();
 
       const campaignStore = useCampaignStore();
-      await campaignStore.createCampaign({
-        name: this.campaignName.trim(),
-        description: this.campaignDescription.trim(),
-        startDate: this.startDate,
-        endDate: this.endDate,
-        dailyDigest: this.dailyDigest,
-        keywords: this.linkedKeywords.join(','),
-        digestFrequency: this.digestFrequency,
-      });
+      try {
+        await campaignStore.createCampaign({
+          name: this.campaignName.trim(),
+          description: this.campaignDescription.trim(),
+          startDate: this.startDate,
+          endDate: this.endDate,
+          dailyDigest: this.dailyDigest,
+          keywords: this.linkedKeywords.join(","),
+          digestFrequency: this.digestFrequency,
+        });
 
-      if (!campaignStore.error) {
         this.showSuccessModal = true;
         this.createdCampaignId = campaignStore.createdCampaign.id;
-      } else {
-        this.errors.general = campaignStore.error;
+      } catch (error) {
+        this.errors.general =
+          campaignStore.error || "Failed to create campaign";
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -315,7 +316,7 @@ export default {
     closeModal() {
       this.showSuccessModal = false;
       this.resetForm();
-      this.$router.push({ name: 'OverviewComp' })
+      this.$router.push({ name: "OverviewComp" });
     },
 
     addKeyword() {
@@ -330,7 +331,7 @@ export default {
     },
 
     cancel() {
-      this.$router.push({ name: 'OverviewComp' })
+      this.$router.push({ name: "OverviewComp" });
     },
 
     resetForm() {
@@ -350,7 +351,7 @@ export default {
 
 <style scoped>
 .form-card {
-  background-color: #f9f9f9;
+  background-color: #ffff;
   border: 1px solid #ccc;
 }
 

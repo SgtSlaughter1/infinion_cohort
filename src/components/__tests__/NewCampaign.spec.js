@@ -1,28 +1,23 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { createPinia, setActivePinia } from "pinia";
 import { mount } from "@vue/test-utils";
 import NewCampaign from "@/views/NewCampaign.vue";
-import apiService from "@/services/api";
+import { useCampaignStore } from "@/stores/CampaignStore";
 import axios from "axios";
-
-// Mock the router for navigation
-const mockRouter = {
-  push: vi.fn(),
-};
-
-// Mock axios for API calls
-vi.mock("axios");
 
 describe("NewCampaign.vue", () => {
   let wrapper;
-//Reset mocks and mount component before each test
+
   beforeEach(() => {
     vi.clearAllMocks();
 
+    // Set up the Pinia store
+    const pinia = createPinia();
+    setActivePinia(pinia);
+
     wrapper = mount(NewCampaign, {
       global: {
-        mocks: {
-          $router: mockRouter,
-        },
+        plugins: [pinia],
       },
       data() {
         return {
@@ -39,7 +34,6 @@ describe("NewCampaign.vue", () => {
     });
   });
 
-  //Form validation Test
   it("validates required fields", async () => {
     await wrapper.find("form").trigger("submit");
 
@@ -61,8 +55,6 @@ describe("NewCampaign.vue", () => {
     expect(wrapper.vm.errors.endDate).toBe("End date must be after start date");
   });
 
-
-  //Keywords management test
   it("adds and removes keywords correctly", async () => {
     await wrapper.setData({ currentKeyword: "test-keyword" });
     await wrapper.find("#linkedKeywords").trigger("keydown.enter");
@@ -73,15 +65,15 @@ describe("NewCampaign.vue", () => {
     expect(wrapper.vm.linkedKeywords).toHaveLength(0);
   });
 
-
-  //Successful campaign creation test
   it("successfully creates a campaign", async () => {
-    const mockCampaignData = {
-      id: 1,
-      name: "Test Campaign",
-    };
+    const mockCampaignData = { id: 1, name: "Test Campaign" };
+    const campaignStore = useCampaignStore();
 
-    axios.post.mockResolvedValueOnce({ data: mockCampaignData });
+    // Update the mock to properly set the store state
+    vi.spyOn(campaignStore, "createCampaign").mockImplementation(async () => {
+      campaignStore.createdCampaign = mockCampaignData;
+      return mockCampaignData;
+    });
 
     await wrapper.setData({
       campaignName: "Test Campaign",
@@ -94,45 +86,22 @@ describe("NewCampaign.vue", () => {
       showSuccessModal: false,
     });
 
-    // Define the submit method in the component
-    wrapper.vm.submitForm = async () => {
-      try {
-        await apiService.createCampaign({
-          name: wrapper.vm.campaignName,
-          description: wrapper.vm.campaignDescription,
-          startDate: wrapper.vm.startDate,
-          endDate: wrapper.vm.endDate,
-          dailyDigest: wrapper.vm.dailyDigest,
-          digestFrequency: wrapper.vm.digestFrequency,
-          keywords: wrapper.vm.linkedKeywords.join(","),
-        });
-        wrapper.vm.showSuccessModal = true;
-      } catch (error) {
-        wrapper.vm.errors.general = error.message;
-      }
-    };
+    await wrapper.vm.createCampaign();
 
-    await wrapper.vm.submitForm();
-
-    // Verify API call
-    expect(axios.post).toHaveBeenCalledTimes(1);
-    expect(axios.post.mock.calls[0][0]).toMatch(/\/api\/Campaign$/);
-    expect(axios.post.mock.calls[0][1]).toEqual(
-      expect.objectContaining({
-        campaignName: expect.any(String),
-        campaignDescription: expect.any(String),
-      })
-    );
-
-    // Wait for the next tick to ensure reactive updates
-    await wrapper.vm.$nextTick();
+    expect(campaignStore.createdCampaign).toEqual(mockCampaignData);
     expect(wrapper.vm.showSuccessModal).toBe(true);
+    expect(wrapper.vm.createdCampaignId).toBe(1);
   });
 
   it("handles API errors correctly", async () => {
-    // Create an error with the default message that apiService will return
     const errorMessage = "Failed to create campaign";
-    axios.post.mockRejectedValueOnce(new Error(errorMessage));
+    const campaignStore = useCampaignStore();
+
+    // Update the mock to properly set the store error
+    vi.spyOn(campaignStore, "createCampaign").mockImplementation(async () => {
+      campaignStore.error = errorMessage;
+      throw new Error(errorMessage);
+    });
 
     await wrapper.setData({
       campaignName: "Test Campaign",
@@ -142,34 +111,26 @@ describe("NewCampaign.vue", () => {
       errors: { general: "" },
     });
 
-    // Define the submit method in the component
-    wrapper.vm.submitForm = async () => {
-      try {
-        await apiService.createCampaign({
-          name: wrapper.vm.campaignName,
-          description: wrapper.vm.campaignDescription,
-          startDate: wrapper.vm.startDate,
-          endDate: wrapper.vm.endDate,
-        });
-      } catch (error) {
-        wrapper.vm.errors.general = error.message;
-      }
-    };
-
-    await wrapper.vm.submitForm();
+    try {
+      await wrapper.vm.createCampaign();
+    } catch (error) {
+    }
 
     await wrapper.vm.$nextTick();
+    expect(campaignStore.error).toBe(errorMessage);
     expect(wrapper.vm.errors.general).toBe(errorMessage);
   });
 });
 
-describe("apiService", () => {
+describe("campaignStore", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    const pinia = createPinia();
+    setActivePinia(pinia);
   });
 
   it("formats campaign data correctly before sending to API", async () => {
-    axios.post.mockResolvedValueOnce({ data: { id: 1 } });
+    vi.spyOn(axios, "post").mockResolvedValueOnce({ data: { id: 1 } });
 
     const inputData = {
       name: "Test Campaign",
@@ -191,7 +152,8 @@ describe("apiService", () => {
       dailyDigest: "daily",
     };
 
-    await apiService.createCampaign(inputData);
+    const campaignStore = useCampaignStore();
+    await campaignStore.createCampaign(inputData);
 
     expect(axios.post).toHaveBeenCalledWith(
       "https://infinion-test-int-test.azurewebsites.net/api/Campaign",
@@ -214,9 +176,10 @@ describe("apiService", () => {
       },
     };
 
-    axios.post.mockRejectedValueOnce(mockError);
+    vi.spyOn(axios, "post").mockRejectedValueOnce(mockError);
 
-    const promise = apiService.createCampaign({
+    const campaignStore = useCampaignStore();
+    const promise = campaignStore.createCampaign({
       name: "Test Campaign",
       description: "Test Description",
       startDate: "2024-12-01",
