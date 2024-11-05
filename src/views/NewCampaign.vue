@@ -171,7 +171,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-primary">
+            <h5 class="modal-title text">
               Campaign Created Successfully!
             </h5>
             <button
@@ -199,7 +199,7 @@
 </template>
 
 <script>
-import apiService from "@/services/api";
+import { useCampaignStore } from '@/stores/CampaignStore';
 
 export default {
   name: "NewCampaign",
@@ -279,32 +279,27 @@ export default {
       return isValid;
     },
 
-    async createCampaign() {
+        async createCampaign() {
       if (!this.validateForm()) return;
-
-      this.isLoading = true;
+      this.isLoading= "true";
       this.clearErrors();
 
-      try {
-        const campaignData = {
-          name: this.campaignName.trim(),
-          description: this.campaignDescription.trim(),
-          startDate: this.startDate,
-          endDate: this.endDate,
-          dailyDigest: this.dailyDigest,
-          keywords: this.linkedKeywords.join(","),
-          digestFrequency: this.digestFrequency,
-        };
+      const campaignStore = useCampaignStore();
+      await campaignStore.createCampaign({
+        name: this.campaignName.trim(),
+        description: this.campaignDescription.trim(),
+        startDate: this.startDate,
+        endDate: this.endDate,
+        dailyDigest: this.dailyDigest,
+        keywords: this.linkedKeywords.join(','),
+        digestFrequency: this.digestFrequency,
+      });
 
-        const createdCampaign = await apiService.createCampaign(campaignData);
-        this.$emit("campaign-created", createdCampaign);
-        this.createdCampaignId = createdCampaign.id;
+      if (!campaignStore.error) {
         this.showSuccessModal = true;
-      } catch (error) {
-        this.errors.general = error.message;
-        console.error("Campaign creation error:", error);
-      } finally {
-        this.isLoading = false;
+        this.createdCampaignId = campaignStore.createdCampaign.id;
+      } else {
+        this.errors.general = campaignStore.error;
       }
     },
 

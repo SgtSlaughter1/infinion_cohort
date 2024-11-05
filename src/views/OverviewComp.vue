@@ -54,7 +54,7 @@
 
               <!-- Export Button -->
               <button
-                class="btn btn-outline-primary d-flex align-items-center gap-2 export-btn"
+                class="btn btn-outline d-flex align-items-center gap-2 export-btn"
               >
                 <i class="fas fa-file-export"></i>
                 Export
@@ -76,7 +76,7 @@
             No activity yet. Create a new campaign to get started
           </p>
           <button
-            class="btn btn-primary d-flex align-items-center gap-2 mt-2 newbtn"
+            class="btn  d-flex align-items-center gap-2 mt-2 newbtn"
             @click="goToNewCampaign"
           >
             <i class="fas fa-plus"></i>
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { useCampaignStore } from '@/stores/CampaignStore';
 
 export default {
   name: "Overview",
@@ -254,10 +254,18 @@ export default {
 .newbtn {
   color: white;
   background-color: #1c6161;
+  border-color: #1c6161;
 }
-
+.newbtn:hover {
+  background-color: #0c7e7e;
+}
 .export-btn {
   white-space: nowrap;
+  background-color: #247b7b;
+  color:white;
+}
+.export-btn:hover{
+  background-color: #0e9191;
 }
 
 .responsive-image {
@@ -289,6 +297,7 @@ export default {
   .export-btn {
     width: 100%;
     justify-content: center;
+    
   }
 
   .toast-container {
