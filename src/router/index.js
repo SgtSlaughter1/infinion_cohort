@@ -18,7 +18,6 @@ const router = createRouter({
       name: "NewCampaign",
       component: NewCampaign,
     },
- 
   ],
   
 })
