@@ -3,8 +3,11 @@
     <v-layout>
       <v-app-bar>
         <!-- Navigation Icon to toggle sidebar -->
-        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        
+        <v-app-bar-nav-icon
+          variant="text"
+          @click.stop="drawer = !drawer"
+        ></v-app-bar-nav-icon>
+
         <!-- Search Field -->
         <v-text-field
           v-model="searchQuery"
@@ -45,12 +48,20 @@
               <!-- <v-list-item-title>Notifications</v-list-item-title> -->
             </v-list-item>
             <v-list-item>
-              <img src="/image/image 16 (2).png" alt="logo" class="photo-dropdown" />
+              <img
+                src="/image/image 16 (2).png"
+                alt="logo"
+                class="photo-dropdown"
+              />
               <!-- <v-list-item-title>Logo</v-list-item-title> -->
             </v-list-item>
             <v-list-item>
               Big Tech
-              <img src="/image/mdi_chevron-down (1).png" alt="chevron icon" class="chevron-dropdown" />
+              <img
+                src="/image/mdi_chevron-down (1).png"
+                alt="chevron icon"
+                class="chevron-dropdown"
+              />
               <!-- <v-list-item-title>Chevron Icon</v-list-item-title> -->
             </v-list-item>
           </v-list>
@@ -114,16 +125,15 @@
     </v-layout>
   </v-card>
 </template>
-
+  
 <script>
-import { ref } from "vue";
-
 export default {
   data() {
     return {
       drawer: false,
       searchQuery: "",
       items: [
+       
         { title: "New Campaign", route: "/newcampaign", icon: "mdi-plus" },
         { title: "Overview", route: "/", icon: "mdi-bullhorn" },
         { title: "Campaign", route: "/campaign", icon: "mdi-bullhorn" },
@@ -140,11 +150,10 @@ export default {
       };
     },
   },
-
 };
 </script>
-
-<style scoped>
+  
+  <style scoped>
 .v-navigation-drawer {
   background-color: #f0f4f4 !important;
 }
@@ -169,14 +178,14 @@ export default {
   margin-bottom: 20px;
   padding: 0 20px;
 }
-.v-menu{
+.v-menu {
   display: none;
 }
-.three-dots{
-  display:none;
+.three-dots {
+  display: none;
 }
-.photo{
-margin-right: 10px;
+.photo {
+  margin-right: 10px;
 }
 @media screen and (min-width: 320px) and (max-width: 425px) {
   .photo {
@@ -185,18 +194,21 @@ margin-right: 10px;
   .icon-bell {
     width: 10px;
   }
-  .v-menu{
-  display: block;
-}
-.three-dots{
-  display:block;
-}
-.icon-notify, .photo , .bigtech{
-  display: none;
-}
-.v-text-field{
-  width: 100%;
-margin-right: -50px;
-}
+  .v-menu {
+    display: block;
+  }
+  .three-dots {
+    display: block;
+  }
+  .icon-notify,
+  .photo,
+  .bigtech {
+    display: none;
+  }
+  .v-text-field {
+    width: 100%;
+    margin-right: -50px;
+  }
 }
 </style>
+  

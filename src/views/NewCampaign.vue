@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>welcome</h1>
+        <h1>newcampaign</h1>
     </div>
 </template>
 

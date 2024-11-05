@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
-import Dashboard from '@/Dashboard.vue'
 import Overview from '@/views/Overview.vue'
 import NewCampaign from '@/views/NewCampaign.vue'
 import Campaign from '@/views/Campaign.vue'
