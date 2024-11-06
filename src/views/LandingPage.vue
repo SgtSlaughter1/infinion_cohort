@@ -9,7 +9,6 @@
             <div class="content animate__animated animate__slideInDown">
                 <h1>Welcome to Scrutz</h1>
                 <h6>Do you have a campaign and you do not know how to go about it ? <br>Trust us with your campaign and we will give you the very best experience.</h6>
-                <!-- <img src="/images/arrowdown.svg"/> -->
             </div>
             <router-link to="/login" class="btn custom-btn btn-lg  animate__animated animate__slideInUp mt-4">Get Started</router-link>
         </div>

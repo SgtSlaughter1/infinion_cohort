@@ -32,7 +32,7 @@
 
 <script>
 import axios from "axios";
-import "../mock"; // Ensure the mock is imported
+import "../mock";
 
 export default {
     data() {
@@ -42,6 +42,8 @@ export default {
             emailError: "",
             passwordError: "",
             successMessage: "",
+            error: "",
+            loading: false,
         };
     },
     methods: {
@@ -72,20 +74,19 @@ export default {
             this.emailError = "";
             this.passwordError = "";
             this.successMessage = "";
-            this.loading = false; // Initial loading state
+            this.loading = false;
 
             this.validateEmail();
             this.validatePassword();
 
             if (!this.emailError && !this.passwordError) {
-                this.loading = true; // Set loading to true before making the request
+                this.loading = true;
                 try {
                     const response = await axios.post("/api/login", {
                         email: this.email,
                         password: this.password,
                     });
 
-                    // Handle successful login
                     if (response.data.message) {
                         this.successMessage = response.data.message;
 
@@ -95,11 +96,9 @@ export default {
                             this.successMessage = `Welcome back, ${user.name}!`;
                         }
 
-                        // Reset the form fields
                         this.email = "";
                         this.password = "";
 
-                        // Wait for 2 seconds before navigating
                         setTimeout(() => {
                             this.loading = false;
                             this.successMessage = "";
@@ -113,7 +112,6 @@ export default {
                         ? err.response.data.message
                         : "Error occurred!";
                 } finally {
-                    // Reset error messages regardless of the outcome
                     this.emailError = "";
                     this.passwordError = "";
                 }

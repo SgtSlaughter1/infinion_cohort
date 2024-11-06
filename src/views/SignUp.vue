@@ -203,7 +203,6 @@ export default {
             this.formData = { name: "", email: "", password: "", phone: "", dob: "", gender: "" };
             this.errors = { name: "", email: "", password: "", phone: "", dob: "", gender: "" };
             this.formError = "";
-            // this.successMessage = "";
         },
     },
 };
