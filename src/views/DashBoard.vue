@@ -115,7 +115,7 @@
             <h6>Need help?</h6>
             <p class="small-text">We're readily available to provide help</p>
           </div>
-          <button class="btn btn-outline-primary">Get help</button>
+          <button class="btn ">Get help</button>
         </div>
       </v-navigation-drawer>
 
@@ -173,6 +173,10 @@ export default {
 .btn {
   border: 1px solid #247b7b;
   outline-color: #247b7b;
+}
+.btn:hover{
+  background: #247b7b;
+  color: #fff;
 }
 .v-list-item {
   margin-bottom: 20px;
