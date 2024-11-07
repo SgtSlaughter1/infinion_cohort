@@ -51,11 +51,6 @@
                 </div>
 
                 <div class="detail-group">
-                    <label>Campaign Status</label>
-                    <div class="detail-value">{{ campaign.campaignStatus }}</div>
-                </div>
-
-                <div class="detail-group">
                     <label>Daily Digest</label>
                     <div class="detail-value">{{ campaign.digestCampaign ? 'Yes' : 'No' }}</div>
                 </div>
@@ -67,17 +62,80 @@
             </div>
 
             <div class="button-group">
-                <button @click="goBackToCampaigns" class="btn btn-primary">Back to Campaigns</button>
+                <button @click="goBackToCampaigns" class="btn me-5">Back to Campaigns</button>
+                <button @click="editCampaigns" class="btn edit-btn">Edit Campaigns</button>
             </div>
+
         </div>
     </div>
 </template>
 
 <script>
+import { useRoute } from 'vue-router';
+import { useCampaignStore } from '@/stores/campaignStore';
 
+export default {
+    data() {
+        return {
+            loading: true, // Indicates if the campaign details are being loaded
+            error: null, // Stores any error message related to fetching campaign details
+            campaign: null, // Holds the campaign details once fetched
+        };
+    },
+    computed: {
+        // Computes the class to apply based on the campaign status
+        statusClass() {
+            return this.campaign && this.campaign.campaignStatus === 'Active' ? 'text-success' : 'text-danger';
+        },
+    },
+    methods: {
+        // Fetches the campaign details based on the route parameter
+        async fetchCampaignDetails() {
+            const route = useRoute(); // Gets the current route information
+            const store = useCampaignStore(); // Access the campaign store
+            try {
+                // Fetch campaigns if the store is empty
+                if (store.state.campaigns.length === 0) {
+                    await store.fetchCampaigns();
+                }
+
+                const campaignId = route.params.id; // Gets the campaign ID from the route
+                const campaigns = store.state.campaigns; // Gets the list of campaigns
+
+                console.log('Available campaigns:', campaigns);
+                console.log('Fetching campaign with ID:', campaignId);
+
+                // Finds the specific campaign by ID
+                this.campaign = campaigns.find(c => c.id.toString() === campaignId);
+
+                if (!this.campaign) {
+                    throw new Error('Campaign not found'); // Throws an error if the campaign is not found
+                }
+            } catch (err) {
+                this.error = err.message || 'Failed to load campaign details.'; // Sets the error message
+            } finally {
+                this.loading = false; // Sets loading to false after the operation is complete
+            }
+        },
+        // Navigates back to the campaigns overview
+        goBackToCampaigns() {
+            this.$router.push({ name: 'AllCampaigns' });
+        },
+        // Navigates to the edit campaign page
+        editCampaigns() {
+            this.$router.push({ name: 'EditCampaign' });
+        },
+        // Formats the date to a locale string
+        formatDate(date) {
+            return new Date(date).toLocaleDateString();
+        },
+    },
+    // Fetches the campaign details when the component is mounted
+    mounted() {
+        this.fetchCampaignDetails();
+    },
+};
 </script>
-
-
 
 <style scoped>
 .campaign-info {
@@ -85,17 +143,15 @@
     max-width: 800px;
     margin: 0 auto;
 }
+
 h2 {
     color: #247B7B;
 }
 
-input {
-    cursor: disabled;
-}
 .back-button {
     border: none;
     background: none;
-    color: #0066cc;
+    color: #247B7B;
     font-size: 1.1em;
     padding: 10px 0;
     cursor: pointer;
@@ -109,7 +165,6 @@ input {
 }
 
 .details-container {
-    background: #f8f9fa;
     padding: 20px;
     border-radius: 8px;
 }
@@ -133,6 +188,11 @@ input {
     min-height: 38px;
 }
 
+.btn {
+    background-color: #247B7B;
+    color: #ffff;
+}
+
 .date-fields {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -149,12 +209,21 @@ input {
 
 .button-group {
     margin-top: 20px;
-    text-align: right;
 }
 
 .loading {
     text-align: center;
     padding: 20px;
     color: #666;
+}
+
+@media (max-width: 600px) {
+    .btn {
+        width: 90%;
+    }
+
+    .edit-btn {
+        margin-top: 10px;
+    }
 }
 </style>
