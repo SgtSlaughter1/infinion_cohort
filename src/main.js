@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 // Vuetify
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
@@ -21,6 +20,7 @@ const vuetify = createVuetify({
   components,
   directives,
 });
+
 
 app.use(vuetify);
 app.use(router);

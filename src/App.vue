@@ -8,6 +8,3 @@ import DashBoard from "./views/DashBoard.vue";
   <DashBoard />
   <RouterView />
 </template>
-
-
-
