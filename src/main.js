@@ -1,5 +1,3 @@
-
-
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import "bootstrap";
@@ -12,7 +10,10 @@ import * as directives from "vuetify/directives";
 
 
 import App from './App.vue'
-import router from "./router";
+import router from './router'
+import "bootstrap"
+import "bootstrap/dist/css/bootstrap.min.css"
+import 'animate.css'
 
 
 const app = createApp(App);
