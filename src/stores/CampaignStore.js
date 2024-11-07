@@ -10,6 +10,7 @@ export const useCampaignStore = defineStore("campaign", {
     isLoading: false,
     error: null,
   }),
+
   actions: {
     async createCampaign(campaignData) {
       this.isLoading = true;
@@ -29,7 +30,7 @@ export const useCampaignStore = defineStore("campaign", {
           dailyDigest: campaignData.digestFrequency || "none",
         };
 
-        console.log("Sending formatted data:", formattedData);
+        // console.log("Sending formatted data:", formattedData);
         const response = await axios.post(API_BASE_URL, formattedData, {
           headers: {
             "Content-Type": "application/json",

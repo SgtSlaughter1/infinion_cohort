@@ -5,7 +5,7 @@
         <!-- Navigation Icon to toggle sidebar -->
         <v-app-bar-nav-icon
           variant="text"
-          @click.stop="drawer = !drawer"
+          @click.stop="sidebarMenu = !sidebarMenu"
         ></v-app-bar-nav-icon>
 
         <!-- Search Field -->
@@ -69,28 +69,29 @@
       </v-app-bar>
 
       <!-- Sidebar Navigation Drawer -->
+
       <v-navigation-drawer
-        v-model="drawer"
+        v-model="sidebarMenu"
         :location="$vuetify.display.mobile ? 'left' : undefined"
         temporary
       >
         <v-toolbar-title>
-          <div>
-            <img src="/image/arcticons_google-messages (2).png" class="img1" />
+          <RouterLink to="/">
+            <img src="/image/arcticons_google_messages.png" class="img1" />
             <img src="/image/Scrutz.png" class="img2" />
-          </div>
+          </RouterLink>
         </v-toolbar-title>
 
-        <v-list>
+        <v-list density="compact" nav>
+          <NewCampBtn @click="navigate('/dashboard/new-campaign')"  />
           <v-list-item
             v-for="(item, index) in items"
             :key="index"
+            @click="navigate(item.route)"
+            :class="{ 'v-list-item--active': isActive(item.route) }"
+            link
             :to="item.route"
-            @click="drawer = false"
-            :class="{
-              'new-campaign-background': item.title === 'New Campaign',
-            }"
-            class="m-3"
+            class="my-2"
           >
             <template v-slot:prepend>
               <v-icon>{{ item.icon }}</v-icon>
@@ -115,33 +116,67 @@
             <h6>Need help?</h6>
             <p class="small-text">We're readily available to provide help</p>
           </div>
-          <button class="btn ">Get help</button>
+          <button class="btn">Get help</button>
         </div>
       </v-navigation-drawer>
 
       <v-main>
         <!-- Main content goes here -->
+        <RouterView />
       </v-main>
     </v-layout>
   </v-card>
 </template>
-  
+
 <script>
+import NewCampBtn from "../components/NewCampBtn.vue";
+
 export default {
+  components: {
+    NewCampBtn,
+  },
+
   data() {
     return {
+      route: null,
+      router: null,
+      display: null,
+      sidebarMenu: true,
+      showLinks: false,
       drawer: false,
       searchQuery: "",
       items: [
-       
-        { title: "New Campaign", route: "/newcampaign", icon: "mdi-plus" },
-        { title: "Overview", route: "/", icon: "mdi-bullhorn" },
-        { title: "Campaign", route: "/campaign", icon: "mdi-bullhorn" },
-        { title: "Market Intelligence", icon: "mdi-lightbulb-on-outline" },
-        { title: "Account Settings", icon: "mdi-cog-outline" },
+        // { title: "New Campaign", route: "/newcampaign", icon: "mdi-plus" },
+        {
+          title: "Overview",
+          route: "/dashboard/overview",
+          icon: "mdi-bullhorn",
+        },
+        {
+          title: "Campaigns",
+          route: "/dashboard/campaign",
+          icon: "mdi-bullhorn",
+        },
+        {
+          title: "Market Intelligence",
+          route: "/dashboard/market-intelligence",
+          icon: "mdi-lightbulb-on-outline",
+        },
+        {
+          title: "Account Settings",
+          route: "/dashboard/account-settings",
+          icon: "mdi-cog-outline",
+        },
       ],
     };
   },
+
+  mounted() {
+    this.route = this.$route;
+    this.router = this.$router;
+    this.display = this.$vuetify.display;
+  },
+
   computed: {
     searchFieldStyle() {
       return {
@@ -150,10 +185,28 @@ export default {
       };
     },
   },
+
+  methods: {
+    isActive(path) {
+      return (
+        this.$route.path === path ||
+        (path === "/dashboard" &&
+          this.$route.path === "/dashboard/overview")
+      );
+    },
+
+    navigate(path) {
+      this.$router.push(path);
+    },
+
+    toggleLinks() {
+      thiis.showLinks = !thiis.showLinks;
+    },
+  },
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .v-navigation-drawer {
   background-color: #f0f4f4 !important;
 }
@@ -174,13 +227,13 @@ export default {
   border: 1px solid #247b7b;
   outline-color: #247b7b;
 }
-.btn:hover{
+.btn:hover {
   background: #247b7b;
   color: #fff;
 }
 .v-list-item {
   margin-bottom: 20px;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 .v-menu {
   display: none;
@@ -215,4 +268,3 @@ export default {
   }
 }
 </style>
-  

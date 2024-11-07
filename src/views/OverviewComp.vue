@@ -90,6 +90,7 @@
 
 <script>
 import { useCampaignStore } from "@/stores/CampaignStore";
+import axios from 'axios';
 
 export default {
   name: "Overview",
@@ -108,7 +109,7 @@ export default {
 
   methods: {
     goToNewCampaign() {
-      this.$router.push({ name: "NewCampaign" });
+      this.$router.push('/dashboard/new-campaign');
     },
 
     updateFormattedDateRange() {
