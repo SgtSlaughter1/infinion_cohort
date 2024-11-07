@@ -1,11 +1,10 @@
-<template>
-  <router-view></router-view>
-</template>
-
-<script>
+<script setup>
+import DashBoard from "./views/DashBoard.vue";
 
 </script>
 
-<style>
 
-</style>
+<template>
+  <DashBoard />
+  <RouterView />
+</template>
