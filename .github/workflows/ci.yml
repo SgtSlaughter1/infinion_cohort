@@ -51,6 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       deployments: write
+    if: github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main'
+
     steps:
       - uses: actions/checkout@v3
 
