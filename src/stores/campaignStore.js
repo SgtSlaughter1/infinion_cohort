@@ -10,6 +10,7 @@ export const useCampaignStore = defineStore("campaign", {
     isLoading: false,
     error: null,
   }),
+
   actions: {
     async createCampaign(campaignData) {
       this.isLoading = true;
@@ -44,6 +45,8 @@ export const useCampaignStore = defineStore("campaign", {
           status: error.response?.status,
           data: error.response?.data,
           message: error.message,
+          headers: error.response?.headers,
+          config: error.config,
         });
         this.error =
           error.response?.data?.message || "Failed to create campaign";

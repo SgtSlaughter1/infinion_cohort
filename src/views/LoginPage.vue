@@ -102,7 +102,7 @@ export default {
                         setTimeout(() => {
                             this.loading = false;
                             this.successMessage = "";
-                            this.$router.push("/");
+                            this.$router.push("/dashboard/overview");
                         }, 2000);
                     } else {
                         this.emailError = response.data.message;

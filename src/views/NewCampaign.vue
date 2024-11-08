@@ -12,34 +12,19 @@
 
             <form @submit.prevent="createCampaign">
               <div class="mb-3">
-                <label for="campaignName" class="form-label"
-                  >Campaign Name:</label
-                >
-                <input
-                  type="text"
-                  id="campaignName"
-                  v-model="campaignName"
-                  class="form-control"
-                  :class="{ 'is-invalid': errors.campaignName }"
-                  placeholder="e.g The Future is now"
-                />
+                <label for="campaignName" class="form-label">Campaign Name:</label>
+                <input type="text" id="campaignName" v-model="campaignName" class="form-control"
+                  :class="{ 'is-invalid': errors.campaignName }" placeholder="e.g The Future is now" />
                 <div v-if="errors.campaignName" class="invalid-feedback">
                   {{ errors.campaignName }}
                 </div>
               </div>
 
               <div class="mb-3">
-                <label for="campaignDescription" class="form-label"
-                  >Campaign Description:</label
-                >
-                <textarea
-                  id="campaignDescription"
-                  v-model="campaignDescription"
-                  class="form-control"
+                <label for="campaignDescription" class="form-label">Campaign Description:</label>
+                <textarea id="campaignDescription" v-model="campaignDescription" class="form-control"
                   :class="{ 'is-invalid': errors.campaignDescription }"
-                  placeholder="Please add a description to your campaign"
-                  rows="4"
-                ></textarea>
+                  placeholder="Please add a description to your campaign" rows="4"></textarea>
                 <div v-if="errors.campaignDescription" class="invalid-feedback">
                   {{ errors.campaignDescription }}
                 </div>
@@ -48,76 +33,39 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                   <label for="startDate" class="form-label">Start Date:</label>
-                  <input
-                    type="date"
-                    id="startDate"
-                    v-model="startDate"
-                    :min="minDate"
-                    class="form-control"
-                    :class="{ 'is-invalid': errors.startDate }"
-                  />
+                  <input type="date" id="startDate" v-model="startDate" :min="minDate" class="form-control"
+                    :class="{ 'is-invalid': errors.startDate }" />
                   <div v-if="errors.startDate" class="invalid-feedback">
                     {{ errors.startDate }}
                   </div>
                 </div>
                 <div class="col-md-6">
                   <label for="endDate" class="form-label">End Date:</label>
-                  <input
-                    type="date"
-                    id="endDate"
-                    v-model="endDate"
-                    :min="minEndDate"
-                    class="form-control"
-                    :class="{ 'is-invalid': errors.endDate }"
-                  />
+                  <input type="date" id="endDate" v-model="endDate" :min="minEndDate" class="form-control"
+                    :class="{ 'is-invalid': errors.endDate }" />
                   <div v-if="errors.endDate" class="invalid-feedback">
                     {{ errors.endDate }}
                   </div>
                 </div>
               </div>
 
-              <div
-                class="mb-3 d-flex justify-content-between align-items-center"
-              >
-                <label class="form-label mb-0"
-                  >Want to receive daily digest?</label
-                >
+              <div class="mb-3 d-flex justify-content-between align-items-center">
+                <label class="form-label mb-0">Want to receive daily digest?</label>
                 <div class="form-check form-switch">
-                  <input
-                    type="checkbox"
-                    id="dailyDigest"
-                    v-model="dailyDigest"
-                    class="form-check-input custom-switch"
-                    role="switch"
-                  />
+                  <input type="checkbox" id="dailyDigest" v-model="dailyDigest" class="form-check-input custom-switch"
+                    role="switch" />
                 </div>
               </div>
 
               <div class="mb-3">
-                <label for="linkedKeywords" class="form-label"
-                  >Linked Keywords:</label
-                >
-                <input
-                  type="text"
-                  id="linkedKeywords"
-                  v-model="currentKeyword"
-                  @keydown.enter.prevent="addKeyword"
-                  class="form-control"
-                  placeholder="To add keywords, type your keyword and press enter"
-                />
+                <label for="linkedKeywords" class="form-label">Linked Keywords:</label>
+                <input type="text" id="linkedKeywords" v-model="currentKeyword" @keydown.enter.prevent="addKeyword"
+                  class="form-control" placeholder="To add keywords, type your keyword and press enter" />
                 <div class="mt-2">
-                  <span
-                    v-for="(keyword, index) in linkedKeywords"
-                    :key="index"
-                    class="badge keyword-badge me-2 mb-2"
-                  >
+                  <span v-for="(keyword, index) in linkedKeywords" :key="index" class="badge keyword-badge me-2 mb-2">
                     {{ keyword }}
-                    <button
-                      type="button"
-                      @click="removeKeyword(index)"
-                      class="btn-close btn-close-white ms-2 remove-keyword"
-                      aria-label="Remove"
-                    ></button>
+                    <button type="button" @click="removeKeyword(index)"
+                      class="btn-close btn-close-white ms-2 remove-keyword" aria-label="Remove"></button>
                   </span>
                 </div>
               </div>
@@ -126,13 +74,8 @@
                 <label for="digestFrequency" class="form-label">
                   Select digest frequency:
                 </label>
-                <select
-                  id="digestFrequency"
-                  v-model="digestFrequency"
-                  class="form-select"
-                  :class="{ 'is-invalid': errors.digestFrequency }"
-                  :disabled="!dailyDigest"
-                >
+                <select id="digestFrequency" v-model="digestFrequency" class="form-select"
+                  :class="{ 'is-invalid': errors.digestFrequency }" :disabled="!dailyDigest">
                   <option value="" disabled selected>Select</option>
                   <option value="daily">Daily</option>
                   <option value="weekly">Weekly</option>
@@ -144,19 +87,10 @@
               </div>
 
               <div class="d-flex gap-2">
-                <button
-                  type="button"
-                  @click="cancel"
-                  class="btn btn-cancel"
-                  :disabled="isLoading"
-                >
-                  Cancel
+                <button type="button" @click="cancel" class="btn btn-cancel" :disabled="isLoading">
+                  Back
                 </button>
-                <button
-                  type="submit"
-                  class="btn btn-create"
-                  :disabled="isLoading"
-                >
+                <button type="submit" class="btn btn-create" :disabled="isLoading">
                   {{ isLoading ? "Creating..." : "Create Campaign" }}
                 </button>
               </div>
@@ -172,12 +106,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text">Campaign Created Successfully!</h5>
-            <button
-              type="button"
-              class="btn-close"
-              @click="closeModal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" @click="closeModal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <p>Your campaign "{{ campaignName }}" has been created.</p>
@@ -193,11 +122,14 @@
       <div class="modal-backdrop fade show"></div>
     </div>
   </div>
-  <router-view></router-view>
+  <!-- <router-view></router-view> -->
 </template>
 
 <script>
 import { useCampaignStore } from "@/stores/CampaignStore";
+
+// import { useCampaignStore } from '@/stores/campaignStore';
+
 
 export default {
   name: "NewCampaign",
@@ -307,7 +239,7 @@ export default {
     goToViewCampaign() {
       if (this.createdCampaignId) {
         this.$router.push({
-          name: "ViewCampaign",
+          name: "AllCampaign",
           params: { id: this.createdCampaignId },
         });
       }
@@ -316,7 +248,7 @@ export default {
     closeModal() {
       this.showSuccessModal = false;
       this.resetForm();
-      this.$router.push({ name: "OverviewComp" });
+      // this.$router.push({ name: "Overview" });
     },
 
     addKeyword() {
@@ -331,7 +263,7 @@ export default {
     },
 
     cancel() {
-      this.$router.push({ name: "OverviewComp" });
+      this.$router.push({ name: "Overview" });
     },
 
     resetForm() {
@@ -414,12 +346,8 @@ export default {
 .is-invalid:focus {
   box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
+
 .modal-backdrop {
   display: none;
 }
 </style>
-
-
-
-
-
