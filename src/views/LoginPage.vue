@@ -31,8 +31,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import "../mock";
+import axios from "../mock";
 
 export default {
     data() {

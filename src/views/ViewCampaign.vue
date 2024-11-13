@@ -72,14 +72,16 @@
 
 <script>
 import { useRoute } from 'vue-router';
-// import { useCampaignStore } from '@/stores/campaignStore';
+import { useCampaignStore } from '@/stores/CampaignStore';
+
 
 export default {
+    
     data() {
         return {
-            loading: true, // Indicates if the campaign details are being loaded
-            error: null, // Stores any error message related to fetching campaign details
-            campaign: null, // Holds the campaign details once fetched
+            loading: true, 
+            error: null, 
+            campaign: null, 
         };
     },
     computed: {
@@ -89,32 +91,27 @@ export default {
         },
     },
     methods: {
-        // Fetches the campaign details based on the route parameter
         async fetchCampaignDetails() {
-            const route = useRoute(); // Gets the current route information
-            const store = useCampaignStore(); // Access the campaign store
+            const route = useRoute(); 
+            const store = useCampaignStore(); 
             try {
-                // Fetch campaigns if the store is empty
-                if (store.state.campaigns.length === 0) {
+                if (store.campaigns.length === 0) {
                     await store.fetchCampaigns();
                 }
 
-                const campaignId = route.params.id; // Gets the campaign ID from the route
-                const campaigns = store.state.campaigns; // Gets the list of campaigns
-
-                console.log('Available campaigns:', campaigns);
-                console.log('Fetching campaign with ID:', campaignId);
+                const campaignId = route.params.id; 
+                const campaigns = store.campaigns; 
 
                 // Finds the specific campaign by ID
                 this.campaign = campaigns.find(c => c.id.toString() === campaignId);
 
                 if (!this.campaign) {
-                    throw new Error('Campaign not found'); // Throws an error if the campaign is not found
+                    throw new Error('Campaign not found'); 
                 }
             } catch (err) {
-                this.error = err.message || 'Failed to load campaign details.'; // Sets the error message
+                this.error = err.message || 'Failed to load campaign details.'; 
             } finally {
-                this.loading = false; // Sets loading to false after the operation is complete
+                this.loading = false; 
             }
         },
         // Navigates back to the campaigns overview

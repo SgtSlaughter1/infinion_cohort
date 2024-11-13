@@ -1,7 +1,9 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 
-const mock = new MockAdapter(axios);
+
+const axiosInstance = axios.create();
+const mock = new MockAdapter(axiosInstance);
 
 
 mock.onPost("/api/login").reply((config) => {
@@ -15,5 +17,7 @@ mock.onPost("/api/login").reply((config) => {
   }
 });
 
+
+export default axiosInstance;
 // Log the mock setup for debugging purposes
-console.log("Axios mock setup complete.");
+// console.log("Axios mock setup complete.");

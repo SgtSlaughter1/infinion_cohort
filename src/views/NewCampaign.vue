@@ -112,9 +112,9 @@
             <p>Your campaign "{{ campaignName }}" has been created.</p>
           </div>
           <div class="modal-footer">
-            <button @click="goToViewCampaign" class="btn btn-create">
+            <!-- <button @click="goToViewCampaign" class="btn btn-create">
               View Campaign
-            </button>
+            </button> -->
             <button @click="closeModal" class="btn btn-cancel">Close</button>
           </div>
         </div>
@@ -126,9 +126,9 @@
 </template>
 
 <script>
-import { useCampaignStore } from "@/stores/CampaignStore";
 
-// import { useCampaignStore } from '@/stores/campaignStore';
+import { useCampaignStore } from '@/stores/CampaignStore';
+
 
 
 export default {
@@ -236,19 +236,19 @@ export default {
       }
     },
 
-    goToViewCampaign() {
-      if (this.createdCampaignId) {
-        this.$router.push({
-          name: "AllCampaign",
-          params: { id: this.createdCampaignId },
-        });
-      }
-    },
+    // goToViewCampaign() {
+    //   this.closeModal()
+    //   if (this.createdCampaignId) {
+    //     this.$router.push({
+    //       name: "AllCampaign"
+    //     });
+    //   }
+    // },
 
     closeModal() {
       this.showSuccessModal = false;
       this.resetForm();
-      // this.$router.push({ name: "Overview" });
+      this.$router.push({ name: "Overview" });
     },
 
     addKeyword() {

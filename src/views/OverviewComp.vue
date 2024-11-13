@@ -160,9 +160,9 @@ export default {
 </script>
 
 <style scoped>
-.overview-container {
+/* .overview-container {
   padding: 60px 20px 20px 120px;
-}
+} */
 
 .header-content {
   display: flex;

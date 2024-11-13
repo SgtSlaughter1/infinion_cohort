@@ -130,7 +130,7 @@ export default {
         },
         {
           title: "Account Settings",
-          route: "/dashboard/account-settings",
+          // route: "/dashboard/account-settings",
           icon: "mdi-cog-outline",
         },
       ],

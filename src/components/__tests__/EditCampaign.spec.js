@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import EditCampaign from '@/views/EditCampaign.vue';
-import { useCampaignStore } from '@/stores/campaignStore';
+import { useCampaignStore } from '@/stores/CampaignStore';
 
 // Mock the vue-router for testing navigation functionalities
 vi.mock('vue-router', () => ({

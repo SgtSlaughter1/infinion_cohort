@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import LoginPage from "@/views/LoginPage.vue";
-import "@/mock"; 
+import axios from "../../mock";
+
 import { afterEach, beforeEach, describe, it, expect } from "vitest";
 import axios from "axios";
 

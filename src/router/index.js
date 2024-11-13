@@ -24,6 +24,19 @@ const router = createRouter({
     },
 
     {
+      path: '/edit-campaign/:id',
+      name: 'EditCampaign',
+      component: EditCampaign,
+      props: true
+  },
+  {
+      path: '/view-campaign/:id',
+      name: 'ViewCampaign',
+      component: ViewCampaign,
+      props: true
+  },
+
+    {
       path: "/SignUp",
       name: "SignUp",
       component: SignUp,

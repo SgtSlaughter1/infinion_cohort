@@ -9,6 +9,8 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App.vue";
 import 'animate.css'
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const vuetify = createVuetify({
   components,
