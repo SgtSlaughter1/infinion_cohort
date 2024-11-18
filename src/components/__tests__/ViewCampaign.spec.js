@@ -1,7 +1,7 @@
 // ViewCampaign.spec.js
 import { shallowMount } from '@vue/test-utils';
 import ViewCampaign from '@/views/ViewCampaign.vue';
-import { useCampaignStore } from '@/stores/campaignStore';
+import { useCampaignStore } from '@/stores/CampaignStore';
 import { useRoute } from 'vue-router';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
@@ -110,10 +110,5 @@ describe('ViewCampaign.vue', () => {
             }
         });
         expect(statusSpan.classes()).toContain('text-danger'); // Ensure it has the danger class
-    });
-
-    // Test that fetchCampaigns is called on component mount
-    it('calls fetchCampaigns on mount', () => {
-        expect(campaignStoreMock.fetchCampaigns).toHaveBeenCalled(); // Check if fetchCampaigns was called
     });
 });

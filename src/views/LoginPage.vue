@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import axios from "../mock";
+import axiosInstance from "../mock";
 
 export default {
     data() {
@@ -81,7 +81,7 @@ export default {
             if (!this.emailError && !this.passwordError) {
                 this.loading = true;
                 try {
-                    const response = await axios.post("/api/login", {
+                    const response = await axiosInstance.post("/api/login", {
                         email: this.email,
                         password: this.password,
                     });
