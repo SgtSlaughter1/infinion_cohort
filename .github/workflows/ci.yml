@@ -37,10 +37,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18.x"
+          cache: "npm" # Enable npm caching
 
           # Installs npm packages and builds the Vue.js application.
-      - name: Install Packages and dependencies
-        run: npm ci
+      - name: Clean and Install Dependencies
+        run: |
+          npm cache clean --force
+          rm -rf node_modules
+          rm -f package-lock.json
+          npm ci --prefer-offline --no-audit
+          npm rebuild
+
+      - name: Install Optional Dependencies
+        run: |
+          npm install @rollup/rollup-linux-x64-gnu --save-dev
 
       - name: Unit Tests
         run: npm run test:unit
