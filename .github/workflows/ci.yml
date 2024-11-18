@@ -34,9 +34,6 @@ jobs:
 
       - name: Clean and Install Dependencies
         run: |
-          npm cache clean --force
-          rm -rf node_modules
-          rm -f package-lock.json
           npm ci --prefer-offline --no-audit
           npm rebuild
 
