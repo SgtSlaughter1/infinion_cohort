@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const API_BASE_URL = "https://infinion-test-int-test.azurewebsites.net/api/Campaign";
+const API_BASE_URL =
+  "https://infinion-test-int-test.azurewebsites.net/api/Campaign";
 
 export const useCampaignStore = defineStore("campaign", {
   state: () => ({
@@ -9,8 +10,8 @@ export const useCampaignStore = defineStore("campaign", {
     createdCampaign: null,
     isLoading: false,
     error: null,
-    selectedFilter: 'All',
-    searchQuery: '',
+    selectedFilter: "All",
+    searchQuery: "",
     startDate: null,
     currentPage: 1,
     itemsPerPage: 10,
@@ -20,15 +21,24 @@ export const useCampaignStore = defineStore("campaign", {
 
   getters: {
     filteredCampaigns: (state) => {
-      const filterByStatus = campaign =>
-        state.selectedFilter === 'All' || state.selectedFilter === campaign.campaignStatus;
-      const filterBySearch = campaign =>
-        !state.searchQuery || campaign.campaignName.toLowerCase().includes(state.searchQuery.toLowerCase());
-      const filterByDate = campaign =>
-        !state.startDate || new Date(campaign.startDate).toISOString().split('T')[0] === state.startDate;
+      const filterByStatus = (campaign) =>
+        state.selectedFilter === "All" ||
+        state.selectedFilter === campaign.campaignStatus;
+      const filterBySearch = (campaign) =>
+        !state.searchQuery ||
+        campaign.campaignName
+          .toLowerCase()
+          .includes(state.searchQuery.toLowerCase());
+      const filterByDate = (campaign) =>
+        !state.startDate ||
+        new Date(campaign.startDate).toISOString().split("T")[0] ===
+          state.startDate;
 
-      return state.campaigns.filter(campaign =>
-        filterByStatus(campaign) && filterBySearch(campaign) && filterByDate(campaign)
+      return state.campaigns.filter(
+        (campaign) =>
+          filterByStatus(campaign) &&
+          filterBySearch(campaign) &&
+          filterByDate(campaign)
       );
     },
 
@@ -45,10 +55,13 @@ export const useCampaignStore = defineStore("campaign", {
     },
 
     activeCampaigns: (state) =>
-      state.campaigns.filter(campaign => campaign.campaignStatus === 'Active').length,
+      state.campaigns.filter((campaign) => campaign.campaignStatus === "Active")
+        .length,
 
     inactiveCampaigns: (state) =>
-      state.campaigns.filter(campaign => campaign.campaignStatus === 'Inactive').length,
+      state.campaigns.filter(
+        (campaign) => campaign.campaignStatus === "Inactive"
+      ).length,
   },
 
   actions: {
@@ -84,7 +97,8 @@ export const useCampaignStore = defineStore("campaign", {
           data: error.response?.data,
           message: error.message,
         });
-        this.error = error.response?.data?.message || "Failed to create campaign";
+        this.error =
+          error.response?.data?.message || "Failed to create campaign";
         throw new Error(this.error);
       } finally {
         this.isLoading = false;
@@ -100,8 +114,9 @@ export const useCampaignStore = defineStore("campaign", {
         this.campaigns = response.data;
         this.currentPage = 1;
       } catch (err) {
-        console.error('Error', err);
-        this.error = err.response?.data || 'An error occurred while fetching campaigns.';
+        console.error("Error", err);
+        this.error =
+          err.response?.data || "An error occurred while fetching campaigns.";
       } finally {
         this.isLoading = false;
       }
@@ -111,34 +126,42 @@ export const useCampaignStore = defineStore("campaign", {
       this.error = null;
       try {
         await axios.delete(`${API_BASE_URL}/${id}`);
-        this.campaigns = this.campaigns.filter(campaign => campaign.id !== id);
+        this.campaigns = this.campaigns.filter(
+          (campaign) => campaign.id !== id
+        );
 
-        const maxPage = Math.ceil(this.filteredCampaigns.length / this.itemsPerPage);
+        const maxPage = Math.ceil(
+          this.filteredCampaigns.length / this.itemsPerPage
+        );
         if (this.currentPage > maxPage) {
           this.currentPage = Math.max(1, maxPage);
         }
       } catch (err) {
-        this.error = err.response?.data || 'An error occurred while deleting the campaign.';
+        this.error =
+          err.response?.data ||
+          "An error occurred while deleting the campaign.";
       }
     },
     //  Loads a specific campaign by ID
-  
+
     async loadCampaign(campaignId) {
       this.isLoading = true;
       this.error = null;
       try {
         const response = await axios.get(API_BASE_URL);
-        const campaign = response.data.find(c => c.id.toString() === campaignId);
-        
+        const campaign = response.data.find(
+          (c) => c.id.toString() === campaignId
+        );
+
         if (campaign) {
           this.currentCampaign = { ...campaign };
           return campaign;
         } else {
-          this.error = 'Campaign not found';
+          this.error = "Campaign not found";
           return null;
         }
       } catch (err) {
-        this.error = 'Failed to load campaign';
+        this.error = "Failed to load campaign";
         console.error(err);
         return null;
       } finally {
@@ -146,10 +169,10 @@ export const useCampaignStore = defineStore("campaign", {
       }
     },
 
-      // Validates campaign data before saving
+    // Validates campaign data before saving
 
     validateCampaign(campaign) {
-      const isValidDate = dateString => {
+      const isValidDate = (dateString) => {
         const date = new Date(dateString);
         return !isNaN(date.getTime());
       };
@@ -162,33 +185,34 @@ export const useCampaignStore = defineStore("campaign", {
       );
     },
 
-
-      // Saves changes to an existing campaign
+    // Saves changes to an existing campaign
 
     async saveCampaignChanges(campaignData) {
       this.error = null;
       try {
         if (!this.validateCampaign(campaignData)) {
-          throw new Error('Validation failed. Please check your input.');
+          throw new Error("Validation failed. Please check your input.");
         }
 
         const formattedData = {
           ...campaignData,
           startDate: new Date(campaignData.startDate).toISOString(),
           endDate: new Date(campaignData.endDate).toISOString(),
-          digestCampaign: campaignData.digestCampaign === true || campaignData.digestCampaign === 'true',
+          digestCampaign:
+            campaignData.digestCampaign === true ||
+            campaignData.digestCampaign === "true",
         };
 
-        await axios.put(
-          `${API_BASE_URL}/${campaignData.id}`,
-          formattedData
-        );
+        await axios.put(`${API_BASE_URL}/${campaignData.id}`, formattedData);
 
-        await this.updateCampaignStatus(campaignData.id, campaignData.campaignStatus);
+        await this.updateCampaignStatus(
+          campaignData.id,
+          campaignData.campaignStatus
+        );
         this.showSuccessModal = true;
         return true;
       } catch (err) {
-        this.error = 'Failed to save changes';
+        this.error = "Failed to save changes";
         console.error(err);
         return false;
       }
@@ -202,7 +226,7 @@ export const useCampaignStore = defineStore("campaign", {
       try {
         const statusData = {
           id: id,
-          campaignStatus: status === 'Active',
+          campaignStatus: status === "Active",
         };
 
         await axios.put(
@@ -214,7 +238,7 @@ export const useCampaignStore = defineStore("campaign", {
           this.currentCampaign.campaignStatus = status;
         }
       } catch (err) {
-        this.error = 'Failed to update campaign status';
+        this.error = "Failed to update campaign status";
         console.error(err);
       }
     },
@@ -222,23 +246,22 @@ export const useCampaignStore = defineStore("campaign", {
     // Stops a campaign by setting its status to Inactive
     async stopCampaign(id) {
       try {
-        await this.updateCampaignStatus(id, 'Inactive');
+        await this.updateCampaignStatus(id, "Inactive");
         if (this.currentCampaign && this.currentCampaign.id === id) {
-          this.currentCampaign.campaignStatus = 'Inactive';
+          this.currentCampaign.campaignStatus = "Inactive";
         }
       } catch (err) {
-        this.error = 'Failed to stop campaign';
+        this.error = "Failed to stop campaign";
         console.error(err);
       }
     },
 
-    
     // Manages the success modal state
     setShowSuccessModal(value) {
       this.showSuccessModal = value;
     },
 
-      setFilter(filter) {
+    setFilter(filter) {
       this.selectedFilter = filter;
       this.currentPage = 1;
     },
@@ -273,6 +296,6 @@ export const useCampaignStore = defineStore("campaign", {
     closeDeleteDialog() {
       this.showDeleteDialog = false;
       this.campaignToDelete = null;
-    }
+    },
   },
 });

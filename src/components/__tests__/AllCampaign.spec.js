@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { shallowMount, flushPromises } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import AllCampaigns from '/src/views/AllCampaign.vue';
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from '@/stores/CampaignsStores';
 
 // Mock Bootstrap Modal
 vi.mock('bootstrap', () => ({

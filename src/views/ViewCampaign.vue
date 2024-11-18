@@ -72,7 +72,7 @@
 
 <script>
 import { useRoute } from 'vue-router';
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from '@/stores/CampaignsStores';
 
 
 export default {

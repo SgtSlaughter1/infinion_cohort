@@ -1,12 +1,12 @@
 // ViewCampaign.spec.js
 import { shallowMount } from '@vue/test-utils';
 import ViewCampaign from '@/views/ViewCampaign.vue';
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from '@/stores/CampaignsStores';
 import { useRoute } from 'vue-router';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock both the campaign store and vue-router
-vi.mock('@/stores/campaignStore', () => ({
+vi.mock('@/stores/CampaignsStores', () => ({
     useCampaignStore: vi.fn(),
 }));
 

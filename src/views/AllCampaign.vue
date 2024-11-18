@@ -105,7 +105,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from '@/stores/CampaignsStores';
 
 export default {
     setup() {

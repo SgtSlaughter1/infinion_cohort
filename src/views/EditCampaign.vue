@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from '@/stores/CampaignsStores';
 
 export default {
     data() {

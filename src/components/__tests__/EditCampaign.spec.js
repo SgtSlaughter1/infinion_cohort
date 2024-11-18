@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import EditCampaign from '@/views/EditCampaign.vue';
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from '@/stores/CampaignsStores';
 
-vi.mock('@/stores/CampaignStore', () => ({
+vi.mock('@/stores/CampaignsStores', () => ({
     useCampaignStore: vi.fn(),
 }));
 

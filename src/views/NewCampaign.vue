@@ -127,7 +127,7 @@
 
 <script>
 
-import { useCampaignStore } from '@/stores/CampaignStore';
+import { useCampaignStore } from '@/stores/CampaignsStores';
 
 
 

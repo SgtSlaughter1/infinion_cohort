@@ -85,7 +85,7 @@
 
 <script>
 import NewCampBtn from "@/components/NewCampBtn.vue";
-import { useCampaignStore } from "@/stores/CampaignStore";
+import { useCampaignStore } from "@/stores/CampaignsStores";
 import axios from 'axios';
 
 export default {
