@@ -16,7 +16,7 @@
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input v-model="formData.email" type="email" id="email" class="form-control" @blur="validateEmail"
-                        placeholder="email@gmail.com" />    
+                        placeholder="email@gmail.com" />
                     <div class="text-danger" v-if="errors.email">{{ errors.email }}</div>
                 </div>
 
@@ -60,7 +60,7 @@
                 <div class="text-danger" v-if="formError">{{ formError }}</div>
                 <button type="submit" class="btn btn-custom w-100 fw-bold">
                     Create Account
-                    
+
                 </button>
                 <div class="text-center mt-3">
                     <span class="fw-light">Already have an Account? </span>
@@ -175,7 +175,7 @@ export default {
 
             this.validateName();
             this.validateEmail();
-            this.validatePassword(); 
+            this.validatePassword();
             this.validatePhone();
             this.validateDob();
             this.validateGender();
@@ -191,8 +191,8 @@ export default {
 
             setTimeout(() => {
                 this.closeModal();
-                this.$router.push("/login");
-            }, 8000);
+                this.$router.push("/dashboard");
+            }, 5000);
         },
 
         closeModal() {

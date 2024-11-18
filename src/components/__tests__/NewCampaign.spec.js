@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import { mount } from "@vue/test-utils";
 import NewCampaign from "@/views/NewCampaign.vue";
-import { useCampaignStore } from "@/stores/CampaignStore";
+import { useCampaignStore } from "@/stores/CampaignsStores";
 import axios from "axios";
 
 describe("NewCampaign.vue", () => {

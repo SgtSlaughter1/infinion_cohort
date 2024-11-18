@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import SignUp from "@/views/SignUp.vue"; 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const mockRouter = {
     push: vi.fn(),
@@ -152,6 +152,6 @@ describe("SignUp.vue", () => {
         expect(wrapper.vm.successMessage).toBeNull();
 
         await new Promise((resolve) => setTimeout(resolve, 8000));
-        expect(mockRouter.push).toHaveBeenCalledWith("/login");
+        expect(mockRouter.push).toHaveBeenCalledWith("/dashboard");
     }, 10000); 
 });

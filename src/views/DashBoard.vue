@@ -3,22 +3,11 @@
     <v-layout>
       <v-app-bar>
         <!-- Navigation Icon to toggle sidebar -->
-        <v-app-bar-nav-icon
-          variant="text"
-          @click.stop="sidebarMenu = !sidebarMenu"
-        ></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon variant="text" @click.stop="sidebarMenu = !sidebarMenu"></v-app-bar-nav-icon>
 
         <!-- Search Field -->
-        <v-text-field
-          v-model="searchQuery"
-          placeholder="Search for campaign..."
-          density="compact"
-          variant="solo"
-          append-inner-icon="mdi-magnify"
-          single-line
-          hide-details
-          :style="searchFieldStyle"
-        ></v-text-field>
+        <v-text-field v-model="searchQuery" placeholder="Search for campaign..." density="compact" variant="solo"
+          append-inner-icon="mdi-magnify" single-line hide-details :style="searchFieldStyle"></v-text-field>
 
         <v-spacer></v-spacer>
 
@@ -48,20 +37,12 @@
               <!-- <v-list-item-title>Notifications</v-list-item-title> -->
             </v-list-item>
             <v-list-item>
-              <img
-                src="/image/image 16 (2).png"
-                alt="logo"
-                class="photo-dropdown"
-              />
+              <img src="/image/image 16 (2).png" alt="logo" class="photo-dropdown" />
               <!-- <v-list-item-title>Logo</v-list-item-title> -->
             </v-list-item>
             <v-list-item>
               Big Tech
-              <img
-                src="/image/mdi_chevron-down (1).png"
-                alt="chevron icon"
-                class="chevron-dropdown"
-              />
+              <img src="/image/mdi_chevron-down (1).png" alt="chevron icon" class="chevron-dropdown" />
               <!-- <v-list-item-title>Chevron Icon</v-list-item-title> -->
             </v-list-item>
           </v-list>
@@ -70,11 +51,7 @@
 
       <!-- Sidebar Navigation Drawer -->
 
-      <v-navigation-drawer
-        v-model="sidebarMenu"
-        :location="$vuetify.display.mobile ? 'left' : undefined"
-        temporary
-      >
+      <v-navigation-drawer v-model="sidebarMenu" :location="$vuetify.display.mobile ? 'left' : undefined" temporary>
         <v-toolbar-title>
           <RouterLink to="/">
             <img src="/image/arcticons_google_messages.png" class="img1" />
@@ -83,16 +60,9 @@
         </v-toolbar-title>
 
         <v-list density="compact" nav>
-          <NewCampBtn @click="navigate('/dashboard/new-campaign')"  />
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            @click="navigate(item.route)"
-            :class="{ 'v-list-item--active': isActive(item.route) }"
-            link
-            :to="item.route"
-            class="my-2"
-          >
+          <NewCampBtn @click="navigate('/dashboard/new-campaign')" />
+          <v-list-item v-for="(item, index) in items" :key="index" @click="navigate(item.route)"
+            :class="{ 'v-list-item--active': isActive(item.route) }" link :to="item.route" class="my-2">
             <template v-slot:prepend>
               <v-icon>{{ item.icon }}</v-icon>
             </template>
@@ -106,11 +76,7 @@
         <!-- Bottom Content of the Drawer -->
         <div class="drawer-bottom-content bg-white text-center p-3">
           <div class="mb-2">
-            <img
-              src="/image/material-symbols_help-outline (1).png"
-              alt="Bottom Image"
-              class="mx-auto d-block"
-            />
+            <img src="/image/material-symbols_help-outline (1).png" alt="Bottom Image" class="mx-auto d-block" />
           </div>
           <div>
             <h6>Need help?</h6>
@@ -154,7 +120,7 @@ export default {
         },
         {
           title: "Campaigns",
-          route: "/dashboard/campaign",
+          route: "/dashboard/all-campaign",
           icon: "mdi-bullhorn",
         },
         {
@@ -164,7 +130,7 @@ export default {
         },
         {
           title: "Account Settings",
-          route: "/dashboard/account-settings",
+          // route: "/dashboard/account-settings",
           icon: "mdi-cog-outline",
         },
       ],
@@ -210,58 +176,73 @@ export default {
 .v-navigation-drawer {
   background-color: #f0f4f4 !important;
 }
+
 .drawer-bottom-content {
   margin: 20px;
 }
+
 .new-campaign-background {
   background-color: #247b7b;
   color: #fff;
 }
+
 .img1,
 .img2 {
   margin-left: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 .btn {
   border: 1px solid #247b7b;
   outline-color: #247b7b;
 }
+
 .btn:hover {
   background: #247b7b;
   color: #fff;
 }
+
 .v-list-item {
   margin-bottom: 20px;
   padding: 0 10px;
 }
+
 .v-menu {
   display: none;
 }
+
 .three-dots {
   display: none;
 }
+
 .photo {
   margin-right: 10px;
 }
+
 @media screen and (min-width: 320px) and (max-width: 425px) {
   .photo {
     width: 20px;
   }
+
   .icon-bell {
     width: 10px;
   }
+
   .v-menu {
     display: block;
   }
+
   .three-dots {
     display: block;
   }
+
   .icon-notify,
   .photo,
   .bigtech {
     display: none;
   }
+
   .v-text-field {
     width: 100%;
     margin-right: -50px;

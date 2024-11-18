@@ -75,13 +75,8 @@
           <p class="mt-3">
             No activity yet. Create a new campaign to get started
           </p>
-          <button
-            class="btn d-flex align-items-center gap-2 mt-2 newbtn"
-            @click="goToNewCampaign"
-          >
-            <i class="fas fa-plus"></i>
-            New Campaign
-          </button>
+          <NewCampBtn @click="navigate('/dashboard/new-campaign')" />
+
         </div>
       </div>
     </div>
@@ -89,11 +84,15 @@
 </template>
 
 <script>
-import { useCampaignStore } from "@/stores/CampaignStore";
+import NewCampBtn from "@/components/NewCampBtn.vue";
+import { useCampaignStore } from "@/stores/CampaignsStores";
 import axios from 'axios';
 
 export default {
   name: "Overview",
+  components: {
+    NewCampBtn,
+  },
   data() {
     return {
       showWelcome: !localStorage.getItem("welcomeDismissed"),
@@ -107,10 +106,7 @@ export default {
     };
   },
 
-  methods: {
-    goToNewCampaign() {
-      this.$router.push('/dashboard/new-campaign');
-    },
+  methods: { 
 
     updateFormattedDateRange() {
       const { start, end } = this.dateRange;
@@ -164,9 +160,9 @@ export default {
 </script>
 
 <style scoped>
-.overview-container {
+/* .overview-container {
   padding: 60px 20px 20px 120px;
-}
+} */
 
 .header-content {
   display: flex;
