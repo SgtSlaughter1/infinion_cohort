@@ -1,23 +1,72 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import EditCampaign from "/src/views/EditCampaign.vue";
+import ViewCampaign from "@/views/ViewCampaign.vue";
+import LandingPage from "@/views/LandingPage.vue";
+import LoginPage from "@/views/LoginPage.vue";
+import SignUp from "@/views/SignUp.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+      path: "/",
+      name: "landingPage",
+      component: LandingPage,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
-})
+      path: "/login",
+      name: "loginPage",
+      component: LoginPage,
+    },
 
-export default router
+    {
+      path: '/edit-campaign/:id',
+      name: 'EditCampaign',
+      component: EditCampaign,
+      props: true
+  },
+  {
+      path: '/view-campaign/:id',
+      name: 'ViewCampaign',
+      component: ViewCampaign,
+      props: true
+  },
+
+    {
+      path: "/SignUp",
+      name: "SignUp",
+      component: SignUp,
+    },
+    {
+      path: "/dashboard",
+      name: "dashboard",
+      component: () => import("../views/DashBoard.vue"),
+      children: [
+        {
+          path: "new-campaign",
+          name: "new-campaign",
+          component: () => import("../views/NewCampaign.vue"),
+        },
+        {
+          path: "overview",
+          name: "Overview",
+          component: () => import("../views/OverviewComp.vue"),
+        },
+        {
+          path: "all-campaign",
+          name: "AllCampaigns",
+          component: () => import("../views/AllCampaign.vue"),
+        },
+
+        {
+          path: "market-intelligence",
+          name: "market-intelligence",
+          component: () => import("../views/MarketIntelligence.vue"),
+        },
+      ],
+    },
+  ],
+});
+
+export default router;
