@@ -1,9 +1,9 @@
 <template>
     <div class="coming-soon-container">
         <div class="coming-soon-content text-center">
-            <v-icon size="64" color="primary" class="mb-4">mdi-rocket-launch-outline</v-icon>
-            <h1 class="coming-soon-title mb-3">Market Intelligence</h1>
-            <p class="coming-soon-text">We're working on something amazing!</p>
+            <v-icon size="64" color="primary" class="mb-4">mdi-cog-outline</v-icon>
+            <h1 class="coming-soon-title mb-3">Account Settings</h1>
+            <p class="coming-soon-text">We're building something special for you!</p>
             <div class="coming-soon-badge">Coming Soon</div>
         </div>
     </div>
@@ -66,10 +66,4 @@
         font-size: 1rem;
     }
 }
-</style>
-
-<script>
-    export default {
-        
-    }
-</script>
+</style> 

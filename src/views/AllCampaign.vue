@@ -1,87 +1,110 @@
 <template>
     <div class="container-fluid">
-        <h1 class=" mb-4">All Campaigns</h1>
+        <h1 class="mb-4 responsive-heading">All Campaigns</h1>
 
-        <div class="search-bar">
-            <p :class="{ selected: store.selectedFilter === 'All' }" @click="store.setFilter('All')">
-                All ({{ store.totalItems }})
-            </p>
-            <p :class="{ selected: store.selectedFilter === 'Inactive' }" @click="store.setFilter('Inactive')">
-                Inactive ({{ store.inactiveCampaigns }})
-            </p>
-            <p :class="{ selected: store.selectedFilter === 'Active' }" @click="store.setFilter('Active')">
-                Active ({{ store.activeCampaigns }})
-            </p>
-
-            <v-text-field v-model="searchQuery" @input="store.setSearchQuery" placeholder="Search..." variant="outlined"
-                density="compact" class="mx-2" hide-details></v-text-field>
-
-            <v-text-field v-model="startDate" @input="store.setStartDate" type="date" placeholder="Start Date"
-                variant="outlined" density="compact" hide-details></v-text-field>
+        <!-- Show loading state -->
+        <div v-if="store.isLoading" class="d-flex justify-content-center align-items-center loading-container">
+            <v-progress-circular indeterminate color="primary" size="50"></v-progress-circular>
         </div>
 
-        <!-- Vuetify Loading State -->
-        <div v-if="store.isLoading" class="d-flex justify-content-center">
-            <v-progress-circular v-if="store.isLoading" indeterminate color="primary"
-                class="ma-4"></v-progress-circular>
+        <!-- Show content only when not loading -->
+        <div v-else>
+            <div class="search-bar flex-wrap">
+                <div class="filters d-flex flex-wrap gap-2 mb-2">
+                    <p :class="{ selected: store.selectedFilter === 'All' }" @click="store.setFilter('All')">
+                        All ({{ store.totalItems }})
+                    </p>
+                    <p :class="{ selected: store.selectedFilter === 'Inactive' }" @click="store.setFilter('Inactive')">
+                        Inactive ({{ store.inactiveCampaigns }})
+                    </p>
+                    <p :class="{ selected: store.selectedFilter === 'Active' }" @click="store.setFilter('Active')">
+                        Active ({{ store.activeCampaigns }})
+                    </p>
+                </div>
+                
+                <div class="search-inputs d-flex flex-wrap gap-2">
+                    <v-text-field v-model="searchQuery" 
+                        @input="store.setSearchQuery" 
+                        placeholder="Search..." 
+                        variant="outlined"
+                        density="compact" 
+                        class="search-field" 
+                        hide-details>
+                    </v-text-field>
+
+                    <v-text-field v-model="startDate" 
+                        @input="store.setStartDate" 
+                        type="date" 
+                        placeholder="Start Date"
+                        variant="outlined" 
+                        density="compact" 
+                        class="date-field" 
+                        hide-details>
+                    </v-text-field>
+                </div>
+            </div>
+
+            <div class="table-responsive mt-4">
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>S/N</th>
+                            <th>Campaign Name</th>
+                            <th>Start Date</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(campaign, index) in store.paginatedCampaigns" :key="campaign.id">
+                            <td>{{ getSerialNumber(index) }}</td>
+                            <td>{{ campaign.campaignName }}</td>
+                            <td>{{ formatDate(campaign.startDate) }}</td>
+                            <td>
+                                <span :class="[
+                                    'badge',
+                                    campaign.campaignStatus === 'Active' ? 'bg-success' : 'bg-danger'
+                                ]">
+                                    {{ campaign.campaignStatus }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center ">
+                                    <v-btn icon variant="text" :to="{ name: 'ViewCampaign', params: { id: campaign.id } }">
+                                        <v-icon>mdi-eye-outline</v-icon>
+                                    </v-btn>
+                                    <v-btn icon variant="text" :to="{ name: 'EditCampaign', params: { id: campaign.id } }">
+                                        <v-icon>mdi-pencil</v-icon>
+                                    </v-btn>
+                                    <v-btn icon variant="text" @click="store.openDeleteModal(campaign.id)">
+                                        <v-icon>mdi-delete-outline</v-icon>
+                                    </v-btn>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <v-container>
+                <v-row justify="center">
+                    <v-col cols="12" sm="8" md="5" class="d-flex justify-center">
+                        <v-pagination v-model="currentPage" 
+                            :length="store.totalPages" 
+                            :total-visible="$vuetify.display.smAndDown ? 3 : 6"
+                            class="my-4"
+                            rounded="circle" 
+                            active-color="green" 
+                            @update:model-value="store.setPage"
+                            :disabled="store.totalPages <= 1">
+                        </v-pagination>
+                    </v-col>
+                </v-row>
+            </v-container>
         </div>
 
-
-
-        <div v-else class="table-responsive mt-4">
-            <table class="table table-hover table-bordered align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>S/N</th>
-                        <th>Campaign Name</th>
-                        <th>Start Date</th>
-                        <th>Status</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(campaign, index) in store.paginatedCampaigns" :key="campaign.id">
-                        <td>{{ getSerialNumber(index) }}</td>
-                        <td>{{ campaign.campaignName }}</td>
-                        <td>{{ formatDate(campaign.startDate) }}</td>
-                        <td>
-                            <span :class="[
-                                'badge',
-                                campaign.campaignStatus === 'Active' ? 'bg-success' : 'bg-danger'
-                            ]">
-                                {{ campaign.campaignStatus }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="d-flex justify-content-center ">
-                                <v-btn icon variant="text" :to="{ name: 'ViewCampaign', params: { id: campaign.id } }">
-                                    <v-icon>mdi-eye-outline</v-icon>
-                                </v-btn>
-                                <v-btn icon variant="text" :to="{ name: 'EditCampaign', params: { id: campaign.id } }">
-                                    <v-icon>mdi-pencil</v-icon>
-                                </v-btn>
-                                <v-btn icon variant="text" @click="store.openDeleteModal(campaign.id)">
-                                    <v-icon>mdi-delete-outline</v-icon>
-                                </v-btn>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Vuetify Pagination -->
-        <v-container>
-            <v-row justify="center">
-                <v-col cols="5" class="d-flex justify-center">
-                    <v-pagination v-model="currentPage" :length="store.totalPages" :total-visible="6" class="my-4"
-                        rounded="circle" active-color="green" @update:model-value="store.setPage"
-                        :disabled="store.totalPages <= 1"></v-pagination>
-                </v-col>
-            </v-row>
-        </v-container>
-
-        <!-- Vuetify Dialog -->
+        <!-- Delete Dialog can remain outside -->
         <v-dialog v-model="store.showDeleteDialog" max-width="500px">
             <v-card>
                 <v-card-title>Confirm Deletion</v-card-title>
@@ -192,5 +215,9 @@ h1 {
 /* Center the loading spinner */
 .v-progress-circular {
     margin: 0 auto;
+}
+
+.loading-container {
+    min-height: 400px; /* Or adjust to your preferred height */
 }
 </style>

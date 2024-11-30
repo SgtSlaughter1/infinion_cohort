@@ -64,6 +64,11 @@ const router = createRouter({
           name: "market-intelligence",
           component: () => import("../views/MarketIntelligence.vue"),
         },
+        {
+          path: "account-settings",
+          name: "account-settings",
+          component: () => import("../views/AccountSettings.vue"),
+        },
       ],
     },
   ],

@@ -1,67 +1,70 @@
 <template>
-    <div class="d-flex align-items-center justify-content-center vh-100 my-5">
+    <div class="d-flex align-items-center justify-content-center  my-5">
         <div class="form-container animated-form p-4 rounded shadow">
             <h5 class="text-center mb-4">SIGNUP</h5>
 
             <form @submit.prevent="handleSignup">
-                <!-- Name Field -->
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input v-model="formData.name" type="text" id="name" class="form-control" @blur="validateName"
-                        placeholder="Enter your name" />
-                    <div class="text-danger" v-if="errors.name">{{ errors.name }}</div>
-                </div>
+                <div class="row">
+                    <!-- Name Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input v-model="formData.name" type="text" id="name" class="form-control" @blur="validateName"
+                            placeholder="Enter your name" />
+                        <div class="text-danger" v-if="errors.name">{{ errors.name }}</div>
+                    </div>
 
-                <!-- Email Field -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input v-model="formData.email" type="email" id="email" class="form-control" @blur="validateEmail"
-                        placeholder="email@gmail.com" />
-                    <div class="text-danger" v-if="errors.email">{{ errors.email }}</div>
-                </div>
+                    <!-- Email Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input v-model="formData.email" type="email" id="email" class="form-control" @blur="validateEmail"
+                            placeholder="email@gmail.com" />
+                        <div class="text-danger" v-if="errors.email">{{ errors.email }}</div>
+                    </div>
 
-                <!-- Password Field -->
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input v-model="formData.password" type="password" id="password" class="form-control"
-                        @blur="validatePassword" placeholder="Enter Password" />
-                    <div class="text-danger" v-if="errors.password">{{ errors.password }}</div>
-                </div>
+                    <!-- Password Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input v-model="formData.password" type="password" id="password" class="form-control"
+                            @blur="validatePassword" placeholder="Enter Password" />
+                        <div class="text-danger" v-if="errors.password">{{ errors.password }}</div>
+                    </div>
 
-                <!-- Phone Field -->
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input v-model="formData.phone" type="tel" id="phone" class="form-control" @blur="validatePhone"
-                        placeholder="Enter phone number" />
-                    <div class="text-danger" v-if="errors.phone">{{ errors.phone }}</div>
-                </div>
+                    <!-- Phone Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input v-model="formData.phone" type="tel" id="phone" class="form-control" @blur="validatePhone"
+                            placeholder="Enter phone number" />
+                        <div class="text-danger" v-if="errors.phone">{{ errors.phone }}</div>
+                    </div>
 
-                <!-- Date of Birth Field -->
-                <div class="mb-3">
-                    <label for="dob" class="form-label">Date of Birth</label>
-                    <input v-model="formData.dob" type="date" id="dob" class="form-control" @blur="validateDob" />
-                    <div class="text-danger" v-if="errors.dob">{{ errors.dob }}</div>
-                </div>
+                    <!-- Date of Birth Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input v-model="formData.dob" type="date" id="dob" class="form-control" @blur="validateDob" />
+                        <div class="text-danger" v-if="errors.dob">{{ errors.dob }}</div>
+                    </div>
 
-                <!-- Gender Field -->
-                <div class="mb-3">
-                    <label for="gender" class="form-label">Gender</label>
-                    <select v-model="formData.gender" id="gender" class="form-select" @blur="validateGender">
-                        <option value="" disabled>Select your gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <div class="text-danger" v-if="errors.gender">
-                        {{ errors.gender }}
+                    <!-- Gender Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select v-model="formData.gender" id="gender" class="form-select" @blur="validateGender">
+                            <option value="" disabled>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="text-danger" v-if="errors.gender">
+                            {{ errors.gender }}
+                        </div>
                     </div>
                 </div>
 
                 <div class="text-danger" v-if="formError">{{ formError }}</div>
-                <button type="submit" class="btn btn-custom w-100 fw-bold">
-                    Create Account
-
-                </button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-custom fw-bold px-5">
+                        Create Account
+                    </button>
+                </div>
                 <div class="text-center mt-3">
                     <span class="fw-light">Already have an Account? </span>
                     <router-link to="/login" class="btn-link">Login</router-link>
@@ -211,7 +214,7 @@ export default {
 <style scoped>
 .form-container {
     width: 100%;
-    max-width: 400px;
+    max-width: 800px;
     background-color: #f8f9fa;
     padding: 20px;
     border-radius: 8px;
@@ -222,6 +225,7 @@ export default {
     border: 3px solid;
     border-color: #247B7B;
     border-radius: 20px;
+    min-width: 200px;
 }
 
 .btn.btn-custom:hover {
