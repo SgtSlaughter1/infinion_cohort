@@ -44,17 +44,4 @@ describe("LoginPage", () => {
     );
   });
 
-  // it("Login successful!", async () => {
-  //   axiosInstance.post.mockResolvedValue({
-  //     data: { message: "Login successful!" },
-  //   });
-
-  //   await wrapper.find("#email").setValue("test@gmail.com");
-  //   await wrapper.find("#password").setValue("!password123");
-  //   await wrapper.find("form").trigger("submit.prevent");
-
-  //   await wrapper.vm.$nextTick();
-
-  //   expect(wrapper.vm.successMessage).toBe("Welcome back, Test User!");
-  // });
 });
