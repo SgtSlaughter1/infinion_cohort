@@ -66,8 +66,8 @@
             <template v-slot:prepend>
               <v-icon>{{ item.icon }}</v-icon>
             </template>
-
             <v-list-item-title class="py-4">{{ item.title }}</v-list-item-title>
+            
           </v-list-item>
         </v-list>
 
@@ -112,7 +112,6 @@ export default {
       drawer: false,
       searchQuery: "",
       items: [
-        // { title: "New Campaign", route: "/newcampaign", icon: "mdi-plus" },
         {
           title: "Overview",
           route: "/dashboard/overview",
@@ -130,7 +129,7 @@ export default {
         },
         {
           title: "Account Settings",
-          // route: "/dashboard/account-settings",
+          route: "/dashboard/account-settings",
           icon: "mdi-cog-outline",
         },
       ],
